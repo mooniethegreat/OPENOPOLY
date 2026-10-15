@@ -10,4 +10,6 @@ The checked installation used React **19.3.1**, Vite **6.4.4**, Express **5.3.0*
 
 Tokens use original procedural 3D geometry projected to shaded SVG, and the miniature city uses CSS 3D planes. These are stylized assets, not photorealistic scanned models or a WebGL/PBR renderer. Asset origins and limitations remain documented in the source manifests.
 
+The final visual review and controlled before/after frame sample are recorded in the [implementation map](cinematic-implementation-map.md#visual-cycle-3--final-staged-acceptance). The richer scene has a higher measured rendering cost; sustained 60 FPS, lower-power hardware performance and full composited contrast compliance were not verified.
+
 Docker and Compose packaging is included, but no Docker runtime was available for a container smoke test. Direct Node production serving and public multiplayer were verified. Run one application instance with its persistent data volume.

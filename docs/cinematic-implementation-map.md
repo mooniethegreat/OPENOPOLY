@@ -57,7 +57,7 @@ No new rendering framework is required. Procedural 3D token geometry projected t
 3. Materials/lighting cycle: inspect newly articulated city, token identity/metal/gold, cream print, physical edges, room/table contact, decks/dice and property miniature. Verify no rear-row occlusion or wrong labels. Add asset filenames/provenance to manifest.
 4. Final UI cycle: inspect all six finished screens, eight players/long names, light explicit appearance, keyboard/focus, reduced motion, chat keyboard, special decisions, reachable last actions, failure/offline feedback. Record measured evidence and remaining gaps.
 
-No image has yet been declared final-match accepted. Capture lists and actionable findings are recorded below per actual cycle, not replaced by claims that a design brief itself proves completion.
+Capture lists, corrective findings and final acceptance are recorded below per actual review cycle; the design brief itself does not prove completion.
 
 ### Visual cycle 1 — actual composition review
 
@@ -92,6 +92,22 @@ Remaining findings sent directly to the owners:
 The actual asset path and model/illustration provenance are now listed in `public/assets/cinematic/manifest.json`. The token system is original procedural 3D geometry projected to shaded SVG, not full WebGL/PBR or photorealistic rendering. The city remains a deliberate stylized CSS 3D miniature. Existing DM Sans/Manrope typography is retained instead of Montserrat, with original system fallbacks and existing board label metrics; no new font binary or dependency is claimed.
 
 This is the second completed visual-review cycle, with specific corrective work still open. Final polish review must use fresh captures after these corrections and must include real results, complete property/contract reachability, narrow portrait, eight players/long names, and reduced motion. It must not infer unseen states from a successful local-turn screenshot.
+
+### Visual cycle 3 — final staged acceptance
+
+Root accepted the final staged scene and HUD after actual capture review. Complete-board Overview is the entry/reset view, phone play retains the continuous walnut surface, desktop controls use measured clear regions, and shared token identities use the refined stylized metal geometry. This acceptance concerns the delivered interactive composition and materials; it does not claim photorealistic parity. The final release checks are recorded in [release verification](release-verification.md).
+
+Root also completed one controlled frame sample in Chrome 155 headless at 1366 × 768, using an isolated eight-seat fixture and 16 native pan/wheel gestures with five move steps and 30 ms pauses:
+
+| Measurement | Baseline | Delivered scene |
+| --- | ---: | ---: |
+| Recorded frames | 304 | 374 |
+| Median frame interval | 7 ms | 13.9 ms |
+| 95th percentile interval | 13.9 ms | 28 ms |
+| Intervals over 50 ms | 0 | 1 |
+| DOM nodes | 924 | 2,766 |
+
+The delivered sample retained all 40 tiles and produced zero page errors. The more detailed scene costs more rendering work in this workstation sample. These measurements do not establish sustained 60 FPS or performance on lower-power devices. Full composited contrast measurements, lower-power hardware testing and an actual Docker build were not run. Tokens remain original procedural mesh projections, and the city remains stylized CSS 3D architecture.
 
 ## Existing validation commands and release boundary
 
