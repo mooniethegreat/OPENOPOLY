@@ -119,7 +119,7 @@ test('group development emits one expense and incoming payments remain visible w
     await expect(feedback.locator('.payment-feedback-amount')).toHaveText('−$100');
     await expect(feedback).toContainText('Paid to Bank');
     await expect(feedback).toContainText('Group development: Mediterranean Avenue, Baltic Avenue');
-    await expect(page.getByRole('dialog', { name: 'Property details', exact: true })).toBeVisible();
+    await expect(page.getByRole('dialog', { name: 'Mediterranean Avenue', exact: true })).toBeVisible();
     expect(run.read().game.players[0].cash).toBe(1425);
     expect(run.read().game.log.filter(event => event.type === 'build' && event.groupBuildId)).toHaveLength(2);
     await page.screenshot({ path: '.runtime/inspection/payment-group-build.png' });
@@ -128,7 +128,7 @@ test('group development emits one expense and incoming payments remain visible w
     await run.send(1, { type: 'money:send', toPlayerId: owner.playerId, amount: 10, note: 'Building contribution' });
     await expect(feedback.locator('.payment-feedback-amount')).toHaveText('+$10');
     await expect(feedback).toContainText('Building contribution');
-    await expect(page.getByRole('dialog', { name: 'Property details', exact: true })).toBeVisible();
+    await expect(page.getByRole('dialog', { name: 'Mediterranean Avenue', exact: true })).toBeVisible();
     await expect(group.getByRole('button', { name: /Review group build/ })).toBeEnabled();
     expect(run.errors).toEqual([]);
   } finally { await run.close(); }

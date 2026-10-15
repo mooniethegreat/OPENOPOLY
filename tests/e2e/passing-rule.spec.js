@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { showCameraControls } from './ui-helpers.js';
 
 const baseURL = process.env.E2E_BASE_URL || 'http://127.0.0.1:3199';
 const ruleName = 'Allow passing on unowned properties';
@@ -65,7 +66,7 @@ test('a host configures passing before play and two clients see a bank-held deed
         await expect(passButton).toBeEnabled();
         const propertyId = room.game.pendingPurchase, beforeCash = room.game.players.map(p => p.cash), beforeCount = room.game.log.filter(e => e.type === 'declinePurchase').length;
         for (const width of [390, 320]) {
-          await actor.page.setViewportSize({ width, height: 844 }); await actor.page.waitForTimeout(100);
+          await actor.page.setViewportSize({ width, height: 844 }); await showCameraControls(actor.page); await actor.page.waitForTimeout(100);
           const layout = await actor.page.evaluate(() => {
             const rotate = document.querySelector('[aria-label="Rotate board"]').getBoundingClientRect(), views = document.querySelector('.scene-view-controls').getBoundingClientRect();
             return { document: document.documentElement.scrollWidth, width: innerWidth, rotate: rotate.toJSON(), views: views.toJSON(), decision: document.querySelector('.shared-game-decision').getBoundingClientRect().toJSON(), location: document.querySelector('.scene-location').getBoundingClientRect().toJSON() };

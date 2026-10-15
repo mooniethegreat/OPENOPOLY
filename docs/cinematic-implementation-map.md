@@ -4,7 +4,7 @@ The user's full execution brief in `Pasted text.txt` is the current visual autho
 
 ## Existing stack and authority
 
-- React 19.1, Vite 6.3, Socket.IO 4.8, Express 5.1, Lucide React, plain CSS. No installed Three.js/WebGL renderer. Board is a 960-unit CSS 3D world with projected bounds, DOM picking, and screen-space controls.
+- React 19, Vite 6, Socket.IO 4.8, Express 5, Lucide React, plain CSS. The package declares compatible ranges; the tested lockfile resolves React 19.3.1, Vite 6.4.4, Socket.IO 4.8.4 and Express 5.3.0. No installed Three.js/WebGL renderer. Board is a 960-unit CSS 3D world with projected bounds, DOM picking, and screen-space controls.
 - `src/App.jsx`: room create/join/recovery, authenticated socket, shared room state, action dispatch, modal/drawer/composer state. `useGame()` exposes room/game/visualGame/presentation, authoritative action API, pending/connection state, selections, and UI setters.
 - `src/Board.jsx`, `src/board-camera.js`, `src/board-scene.css`: board mapping, geometry, fixed space IDs, camera, label fitting, tokens, decorative city, cards/dice. Keep all legal hit targets and the established gesture/recovery fixes.
 - `src/GameHUD.jsx`: real player rail, current/next turn, own cash/cards, reachable tools, drawers, shared events/contracts. `src/mobile-game.css`: full-viewport continuous phone scene and full-screen sheets. `src/table-chrome.css`: cinematic screen-space material system.

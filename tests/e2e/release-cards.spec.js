@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { build } from 'esbuild';
-import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import express from 'express';
 import { io } from 'socket.io-client';
@@ -9,19 +8,14 @@ import { createGame, applyAction } from '../../shared/engine.js';
 import { getCardDecks } from '../../shared/board.js';
 import { decisionContext } from '../../src/action-gate.js';
 
-let appBundle;
+let appBundle, appStyles;
 test.beforeAll(async () => {
   const bundle = await build({
-    stdin: { resolveDir: process.cwd(), loader: 'jsx', contents: `
-      import React from 'react';
-      import { createRoot } from 'react-dom/client';
-      import App from './src/App.jsx';
-      import RecoveryBoundary from './src/RecoveryBoundary.jsx';
-      createRoot(document.getElementById('root')).render(<React.StrictMode><RecoveryBoundary><App /></RecoveryBoundary></React.StrictMode>);
-    ` },
-    bundle: true, write: false, format: 'iife', loader: { '.css': 'empty' }, define: { 'process.env.NODE_ENV': '"production"' },
+    entryPoints: ['src/main.jsx'], bundle: true, write: false, outdir: '.runtime/release-card-test-bundle',
+    format: 'iife', external: ['/assets/*'], define: { 'process.env.NODE_ENV': '"production"' },
   });
-  appBundle = bundle.outputFiles[0].text;
+  appBundle = bundle.outputFiles.find(file => file.path.endsWith('.js')).text;
+  appStyles = bundle.outputFiles.find(file => file.path.endsWith('.css')).text;
 });
 
 function seedFor(dice) {
@@ -72,7 +66,7 @@ for (const variant of [
       localStorage.setItem('monopoly-table-sessions-v2', JSON.stringify({ [value.roomCode]: value }));
       localStorage.setItem('monopoly-table-active-v2', value.roomCode);
     }, { roomCode: owner.room.code, playerId: owner.playerId, sessionToken: owner.sessionToken, name: 'Card holder', theme: variant.theme });
-    for (const filename of ['src/styles.css', 'src/board-scene.css', 'src/recovery.css']) await page.addStyleTag({ content: await readFile(filename, 'utf8') });
+    await page.addStyleTag({ content: appStyles });
     await page.addScriptTag({ content: appBundle });
     await expect(page.locator('.connection')).toHaveText('CONNECTED');
     const inventoryButton = page.getByTestId('card-inventory-button');
