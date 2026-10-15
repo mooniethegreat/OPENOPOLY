@@ -1,0 +1,21 @@
+name: openopoly
+
+services:
+  openopoly:
+    build: .
+    image: openopoly:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${OPENOPOLY_BIND:-127.0.0.1}:${OPENOPOLY_PORT:-3001}:3001"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3001
+      STORE_PATH: /app/data/rooms.json
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-}
+    volumes:
+      - openopoly-data:/app/data
+
+volumes:
+  openopoly-data:

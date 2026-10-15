@@ -1,0 +1,26 @@
+.at-table .action-copy .turn-countdown{display:flex;align-items:center;gap:7px;font-size:14px;line-height:1.6;color:var(--ui-muted);margin-top:2px;white-space:nowrap}
+.turn-countdown svg{flex-shrink:0;color:var(--ui-accent)}
+.turn-countdown b{font-size:16px;font-variant-numeric:tabular-nums;color:var(--ui-fg)}
+.at-table .action-copy:not(.has-turn-instructions):has(.turn-countdown)>span{display:none}
+.at-table .shared-game-decision .action-copy:has(.turn-countdown)>span{display:block}
+.at-table .turn-action-dock .action-copy:has(.turn-countdown)>strong{line-height:1.2;margin-bottom:0}
+.at-table .turn-action-dock .action-copy:has(.turn-countdown)>span{line-height:1.2;margin-top:0}
+.at-table .action-copy .turn-countdown.ending-soon,.turn-countdown.ending-soon b{color:var(--ui-warning)}
+@media(max-width:720px){.at-table .action-copy .turn-countdown{font-size:13px;gap:5px}.turn-countdown b{font-size:15px}.turn-countdown svg{width:13px;height:13px}}
+
+/* Jail instructions use the whole decision width, with camera tools above it. */
+.app.at-table .shared-game-decision .action-bar.jail-action{grid-template-columns:minmax(0,1fr)}
+.at-table .shared-game-decision .jail-action .action-copy{grid-column:1/-1}
+.at-table .shared-game-decision .jail-action .action-player-token{display:none}
+@media(max-width:600px){
+  .at-table .shared-game-decision .jail-action .action-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+  .at-table .shared-game-decision .jail-action .action-buttons .roll-button{grid-column:1/-1;min-width:0;width:100%}
+  .at-table .shared-game-decision .jail-action .action-buttons>.btn:only-child{grid-column:1/-1;justify-self:end}
+  .at-table .game-stage:has(.jail-action) .shared-game-decision{bottom:12px;max-height:calc(100% - 154px);overflow:auto;overscroll-behavior:contain}
+  .at-table .game-stage:has(.jail-action) .scene-camera-bar{flex-wrap:nowrap}
+  .at-table .game-stage:has(.jail-action) .scene-location{max-width:calc(100% - 100px)}
+  .at-table .game-stage:has(.jail-action) .scene-view-controls{top:18px}
+}
+@media(max-width:359px){
+  .at-table .game-stage:has(.jail-action) .scene-camera-bar [aria-label="Overview"] .camera-label-compact{display:none}
+}

@@ -1,0 +1,14 @@
+.payment-feedback { --payment-ink: #c5f4d4; --payment-bg: #173e2d; --payment-border: #70c28d; position: fixed; z-index: 260; top: 82px; left: 50%; transform: translateX(-50%); display: grid; grid-template-columns: 38px minmax(0, 1fr) 24px; gap: 12px; width: min(430px, calc(100vw - 28px)); max-height: min(360px, calc(100dvh - 110px)); overflow: hidden; padding: 20px 18px; border: 1px solid var(--payment-border); border-radius: 15px; background: var(--payment-bg); color: var(--payment-ink); box-shadow: 0 12px 44px #0005; pointer-events: none; animation: payment-gentle-pulse 1.3s ease-out 2; }
+.payment-feedback.outgoing { --payment-ink: #ffd1c9; --payment-bg: #482922; --payment-border: #e89a8a; }
+.payment-feedback-symbol { display: grid; place-items: center; align-self: start; margin-top: 8px; width: 38px; height: 38px; border: 1px solid var(--payment-border); border-radius: 50%; }
+.payment-feedback-label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+.payment-feedback-amount { display: block; margin: 4px 0; font: 800 38px/1.15 'Manrope', system-ui, sans-serif; letter-spacing: -1.5px; }
+.payment-feedback-party { margin: 7px 0; font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.payment-feedback-reason { margin: 6px 0 0; font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+.payment-feedback-reason b { font-weight: 750; }
+.payment-feedback-copy > small { display: block; margin-top: 9px; font-size: 12px; line-height: 1.5; }
+.payment-feedback-dismiss { display: grid; place-items: center; align-self: start; width: 26px; height: 30px; padding: 0; border: 0; border-radius: 5px; background: transparent; color: var(--payment-ink); pointer-events: auto; }
+.payment-feedback-dismiss:focus-visible { outline: 2px solid var(--payment-ink); outline-offset: 3px; }
+@keyframes payment-gentle-pulse { 0%, 100% { box-shadow: 0 12px 44px #0005, 0 0 0 0 transparent; } 45% { box-shadow: 0 12px 44px #0005, 0 0 0 6px color-mix(in srgb, var(--payment-border) 26%, transparent); } }
+@media (max-width: 600px) { .payment-feedback { top: 68px; padding: 16px 13px; grid-template-columns: 30px minmax(0, 1fr) 24px; gap: 9px; }.payment-feedback-symbol { width: 30px; height: 30px; }.payment-feedback-symbol svg { width: 23px; height: 23px; }.payment-feedback-amount { font-size: 34px; }.payment-feedback-party { font-size: 15px; }.payment-feedback-reason { font-size: 13px; } }
+@media (prefers-reduced-motion: reduce) { .payment-feedback { animation: none; } }

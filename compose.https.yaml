@@ -1,0 +1,24 @@
+services:
+  openopoly:
+    environment:
+      PUBLIC_ORIGIN: https://${OPENOPOLY_DOMAIN:?Set OPENOPOLY_DOMAIN in .env}
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      openopoly:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      OPENOPOLY_DOMAIN: ${OPENOPOLY_DOMAIN:?Set OPENOPOLY_DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  caddy-data:
+  caddy-config:

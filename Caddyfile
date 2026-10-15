@@ -1,0 +1,4 @@
+{$OPENOPOLY_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy openopoly:3001
+}

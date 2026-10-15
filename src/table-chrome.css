@@ -1,0 +1,224 @@
+/* Shared chrome is neutral by default; saved color palettes remain available. */
+.app{
+  --table-panel:color-mix(in srgb,var(--ui-panel) 20%,#111617);
+  --table-raised:color-mix(in srgb,var(--ui-raised) 25%,#1b2020);
+  --table-input:color-mix(in srgb,var(--ui-input) 25%,#171919);
+  --table-ink:#f5f0e4;
+  --table-muted:#b7bcae;
+  --table-line:#d7ba7138;
+  --table-gold:#d7b96d;
+  --table-gold-ink:#272217;
+  --table-red:#c8192b;
+  --table-shadow:0 10px 30px #0004,inset 0 1px #ffffff09;
+}
+.app[data-palette="graphite"]{
+  --ui-bg:#101010;--ui-panel:#161616;--ui-raised:#242424;--ui-input:#1b1b1b;
+  --ui-fg:#f3f3f3;--ui-muted:#bcbcbc;--ui-faint:#9b9b9b;--ui-border:#ffffff26;
+  --ui-accent:#d7b96d;--ui-accent-ink:#231e13;--ui-success:#b8d6b3;--ui-warning:#e5ca84;--ui-danger:#efb0a7;--ui-shadow:#0006;
+  --table-panel:#101010;--table-raised:#1b1b1b;--table-input:#242424;
+  --table-ink:#f3f3f3;--table-muted:#bcbcbc;--table-line:#ffffff26;
+}
+.app[data-mode="light"]{
+  --table-panel:color-mix(in srgb,var(--ui-panel) 20%,#f5f0e4);
+  --table-raised:color-mix(in srgb,var(--ui-raised) 25%,#e6decc);
+  --table-input:color-mix(in srgb,var(--ui-input) 20%,#fffaf0);
+  --table-ink:#25261f;
+  --table-muted:#5b6054;
+  --table-line:#9a865e66;
+  --table-gold:#916a2e;
+  --table-gold-ink:#fffaf0;
+  --table-shadow:0 8px 26px #25201620,inset 0 1px #ffffffaa;
+}
+.app[data-palette="graphite"][data-mode="light"]{
+  --ui-bg:#ececec;--ui-panel:#fafafa;--ui-raised:#dedede;--ui-input:#fff;
+  --ui-fg:#252525;--ui-muted:#5d5d5d;--ui-faint:#717171;--ui-border:#7775;--ui-shadow:#0002;
+  --table-panel:#f5f5f5;--table-raised:#e4e4e4;--table-input:#fff;
+  --table-ink:#252525;--table-muted:#5d5d5d;--table-line:#7775;
+}
+.app .modal,.app .welcome-form-card,.app .game-drawer,.app .contract-announcement,.app .shared-game-decision,
+.app .pending-agreements,.app .agreement-result,.app .shared-card-event,.app .shared-result,
+.app .presentation-notice,.app .uncertain-command,.app .sound-settings,
+.app.at-table .app-header,.app.at-table .player-rail,.app.at-table .turn-strip,
+.app.at-table .game-bottom-bar,.app.at-table .player-hud,.app.at-table .game-tools,
+.app.at-table .turn-action-dock,.app.at-table .scene-location,
+.app.at-table .scene-camera-bar,.app.at-table .scene-view-controls{
+  --ui-panel:var(--table-panel);--ui-raised:var(--table-raised);--ui-input:var(--table-input);
+  --ui-fg:var(--table-ink);--ui-muted:var(--table-muted);--ui-faint:var(--table-muted);
+  --ui-border:var(--table-line);--ui-accent:var(--table-gold);--ui-accent-ink:var(--table-gold-ink);
+  color:var(--table-ink);
+}
+.app.at-table{background:radial-gradient(ellipse at 45% 35%,transparent 30%,#100b0866),url('/assets/cinematic/evening-lounge-original.png') center bottom/auto 154% no-repeat,#302118}
+.app.at-table .app-header{background:color-mix(in srgb,var(--table-panel) 93%,transparent);border-color:var(--table-line);box-shadow:0 2px 16px #0002}
+.app.at-table .wordmark{color:var(--table-ink);letter-spacing:1px}
+.app .brand-m{background:linear-gradient(#d51c31,#9c0d20);border-color:#ef6c72;box-shadow:inset 0 0 0 2px #980d1e,0 2px 8px #0003}
+.app.at-table .player-rail .player-card{background:linear-gradient(135deg,var(--table-raised),var(--table-panel));border-color:var(--table-line);box-shadow:inset 0 1px #ffffff06}
+.app.at-table .player-rail .player-card.current{border-color:var(--table-gold);background:linear-gradient(120deg,color-mix(in srgb,var(--table-gold) 13%,var(--table-panel)),var(--table-panel));box-shadow:0 0 18px #d7b96d12,inset 0 1px #ffffff0a}
+.app.at-table .current-label,.app.at-table .turn-next>span{color:var(--table-gold)}
+.app.at-table .player-name,.app.at-table .player-money,.app.at-table .turn-current strong,.app.at-table .turn-next strong{color:var(--table-ink)}
+.app.at-table .player-rail .player-name{display:flex;min-width:0;gap:4px}
+.player-name-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-name small,.player-name .host-crown{flex-shrink:0}
+.app.at-table .player-rail .player-name small{display:inline-block;min-width:29px;margin:0;padding:1px 3px;font-size:10px;line-height:1.4;text-align:center}
+.app.at-table .turn-strip.your-turn{border-color:var(--table-gold)}
+.app.at-table .game-bottom-bar,.app.at-table .turn-strip,
+.app.at-table .turn-action-dock .action-bar,.app .shared-game-decision,
+.app .contract-announcement,.app .shared-card-event,.app .presentation-notice,
+.app .sound-settings{background:var(--table-panel);border-color:var(--table-line);box-shadow:var(--table-shadow)}
+.app .game-drawer,.app .modal{background:var(--table-panel);border-color:var(--table-line);color:var(--table-ink);box-shadow:0 15px 65px #0006}
+.app .drawer-header,.app .modal-header{border-color:var(--table-line);background:linear-gradient(130deg,color-mix(in srgb,var(--table-gold) 6%,var(--table-panel)),var(--table-panel))}
+.app .drawer-header>span,.app .modal-header h2{color:var(--table-ink)}
+.app .modal-header>.icon-button{min-width:44px;min-height:44px;border-radius:11px}
+.app .modal-header .eyebrow,.app .decision-eyebrow,.app .event-eyebrow{color:var(--table-gold)}
+.app .decision-eyebrow>span,.app .announcement-parties,.app .announcement-waiting{color:var(--table-muted)}
+.app .contract-card,.app .vote-card,.app .finance-editor,.app .transfer-editor,.app .obligation-editor,.app .group-development,.app .release-card-item{border-color:var(--table-line);box-shadow:inset 0 1px #ffffff05}
+.app .contract-card,.app .vote-card,.app .finance-editor,.app .group-development{background:var(--table-raised)}
+.app .form-label,.app .form-label input,.app .form-label textarea,.app .form-label select{color:var(--table-ink)}
+.app .modal .form-label{font-size:13px;font-weight:600;line-height:1.6}
+.app .modal .form-label input,.app .modal .form-label select,.app .modal .form-label textarea{font-size:16px;font-weight:400;background:var(--table-input);border-color:var(--table-line)}
+.app .modal .form-label small,.app .appearance-description,.app .appearance-status{color:var(--table-muted)}
+.app .modal .form-label input:focus,.app .modal .form-label select:focus,.app .modal .form-label textarea:focus{outline:2px solid var(--table-gold);outline-offset:2px}
+.app .modal .btn,.app .game-drawer .btn{background:var(--table-raised);color:var(--table-ink);border-color:var(--table-line)}
+.app .modal .btn.ghost,.app .game-drawer .btn.ghost{background:transparent;color:var(--table-muted)}
+.app .modal-form-footer .btn.primary,.app .contract-actions>.btn.primary,
+.app .new-contract-button,.app .mobile-menu-actions>.btn.primary,
+.app .group-development .group-build-button,.app .chat-compose .btn.primary{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--table-gold) 85%,#fff3c0),var(--table-gold));
+  border-color:var(--table-gold);color:var(--table-gold-ink);box-shadow:inset 0 1px #ffffff33,0 3px 9px #0002;
+}
+.app.at-table .action-bar .btn.primary,.app .money-composer .modal-form-footer .btn.primary,
+.app .group-build-review .btn.primary{
+  background:linear-gradient(160deg,#c8192b,#970d1d);border-color:#ed5862a6;border-top-color:#ff7f87;
+  color:#fff8ef;box-shadow:inset 0 1px #ffffff20,0 4px 0 #610b15,0 8px 22px #870d2033;text-shadow:0 1px #580914;
+}
+.app .btn.danger-outline{background:transparent;color:var(--ui-danger);border-color:var(--ui-danger);box-shadow:none}
+.app.at-table .waiting-chip{background:var(--table-raised);border-color:var(--table-line);color:var(--table-muted)}
+.app.at-table .action-copy>strong{color:var(--table-ink)}
+.app .contract-announcement .action-copy>span,.app.at-table .action-copy>span{color:var(--table-muted)}
+.app .turn-countdown b{color:var(--table-gold)}
+.app .turn-countdown.ending-soon b{color:var(--ui-warning)}
+.app.at-table .drawer-tabs>button{color:var(--table-muted)}
+.app.at-table .drawer-tabs>button:hover,.app.at-table .drawer-tabs>button.active{background:var(--table-raised);color:var(--table-gold);border-color:var(--table-line)}
+.app .tool-badge{background:var(--table-gold);color:var(--table-gold-ink);border-color:var(--table-panel)}
+.app .chat-message{background:var(--table-input);border-color:var(--table-line)}
+.app .chat-message.own-message{background:var(--table-raised)}
+.app .chat-message p,.app .rules-copy p{color:var(--table-ink)}
+.app .segmented,.app .mode-options>button,.app .palette-option{background:var(--table-input);border-color:var(--table-line);color:var(--table-muted)}
+.app .mode-options>button.selected,.app .palette-option.selected,.app .segmented>button.active{background:var(--table-raised);border-color:var(--table-gold);color:var(--table-ink)}
+.app .appearance-fieldset legend{color:var(--table-ink)}
+.app .hud-token{background:#e8e4d5;border-radius:50%;box-shadow:inset 0 1px #fff9,0 2px 5px #0003}
+.app .hud-token .token-photo{mix-blend-mode:multiply}
+.app .hud-card-button{border-color:var(--table-line);color:var(--table-muted)}
+.app .hud-card-button.has-cards{background:var(--table-raised);border-color:var(--table-gold);color:var(--table-gold)}
+.app .mobile-menu-grid>button{background:var(--table-raised);border-color:var(--table-line);color:var(--table-ink);box-shadow:inset 0 1px #ffffff07}
+.app .mobile-menu-grid>button>b{color:var(--table-gold)}
+.app .mobile-player-trigger,.app .mobile-camera-trigger,.app .mobile-chat-trigger,.app .mobile-tools-trigger{background:var(--table-panel);border-color:var(--table-line);color:var(--table-ink);box-shadow:var(--table-shadow)}
+.app .mobile-camera-trigger[aria-expanded="true"]{border-color:var(--table-gold);color:var(--table-gold)}
+.app .mobile-game-menu .btn{border-radius:12px}
+.context-space,.context-actions{display:none}
+.app .palette-options{grid-template-columns:repeat(5,minmax(0,1fr))}
+.app[data-palette="graphite"] .modal-backdrop{background:#000b}
+.app[data-palette="graphite"][data-mode="light"] .modal-backdrop{background:#0006}
+.app[data-palette="graphite"] .welcome-menu>.btn:not(.primary){background:#101010eb;border-color:#ffffff26;color:#e8e8e8}
+.app[data-palette="graphite"] .cinematic-welcome .welcome-footer{background:#101010c9;border-color:#ffffff26;color:#c6c6c6}
+.app[data-palette="graphite"] .drawer-header,.app[data-palette="graphite"] .modal-header{background:var(--table-panel)}
+.app .contract-composer .modal-form-footer{position:sticky;bottom:-1px;z-index:2;padding:14px 0 2px;margin-top:24px;background:var(--table-panel);box-shadow:0 -12px 18px var(--table-panel)}
+.app .emote-tools-button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;min-height:44px;min-width:50px;padding:6px 8px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--table-muted);font-size:11px}
+.app .emote-tools-button:hover{background:var(--table-raised);border-color:var(--table-line);color:var(--table-gold)}
+.app .contract-composer .modal-form-footer>.btn.primary,.app .contract-actions>.btn.primary{background:linear-gradient(#3c7546,#285a32);border-color:#64926a;color:#fff9ef;box-shadow:inset 0 1px #ffffff17,0 3px 9px #0002}
+.app .game-drawer button:focus-visible,.app .mobile-player-trigger:focus-visible,.app .mobile-camera-trigger:focus-visible,.app .mobile-chat-trigger:focus-visible,.app .mobile-tools-trigger:focus-visible{outline:2px solid var(--table-gold);outline-offset:3px}
+
+@media(min-width:601px) and (min-height:501px),(min-width:1001px){
+  .app.at-table .app-header{height:54px;min-height:54px;padding-inline:20px}
+  .app.at-table .app-header .icon-button,.app.at-table .app-header .avatar-button{min-width:44px;min-height:44px}
+  .app.at-table .wordmark>.brand-m{display:none}
+  .app.at-table .wordmark>span:last-child{display:block;padding:4px 9px;font-size:17px;line-height:1.15;letter-spacing:-.6px;font-weight:850;background:linear-gradient(#c8192b,#970d1d);color:#fff;border:1.5px solid #f3e8db;box-shadow:0 2px 0 #660b16}
+  .app.at-table .wordmark .online-wordmark{display:none}
+  .app.at-table .header-nav{gap:9px}
+  .app.at-table .game-layout.immersive-layout{height:calc(100dvh - 54px);grid-template-columns:192px minmax(0,1fr) 180px;grid-template-rows:minmax(0,1fr) 50px;gap:10px 12px;padding:12px}
+  .app.at-table .player-rail .player-card{min-height:88px;padding:10px 8px;gap:8px}
+  .app.at-table .player-rail .player-token{width:42px;height:42px}
+  .app.at-table .player-rail .player-money{font-size:26px;line-height:1.3}
+  .app.at-table .player-rail .player-name{font-size:14px}
+  .app.at-table .player-rail .player-state{min-height:0;font-size:11px;margin-top:3px}
+  .app.at-table .player-rail .player-state:empty{display:none}
+  .app.at-table .player-rail .current-label,.app.at-table .player-rail .next-label{font-size:10px}
+  .app.at-table .player-rail .player-list{gap:8px}
+  .app.at-table .play-area,.app.at-table .play-area.has-decision{grid-column:2;grid-row:1;display:block;min-height:0}
+  .app.at-table .play-area .game-stage{height:100%;border:0;border-radius:0;box-shadow:none;background:transparent;overflow:clip}
+  .app.at-table .play-area .board-scroll>.board-scene{border:0;border-radius:0;box-shadow:none}
+  .app.at-table .context-rail{grid-column:3;grid-row:1;align-self:start;min-height:0;max-height:100%;overflow:auto;border:0;border-radius:0;background:none;color:var(--table-ink);box-shadow:none;scrollbar-width:thin;scrollbar-color:var(--table-line) transparent}
+  .app.at-table .context-rail .turn-strip{display:grid;grid-template-columns:28px minmax(0,1fr);padding:10px;gap:8px;min-height:0;border:1px solid var(--table-line);border-radius:10px;background:var(--table-panel);box-shadow:var(--table-shadow);margin-bottom:12px}
+  .app.at-table .context-rail .turn-number{font-size:10px;padding-right:10px;letter-spacing:.6px}
+  .app.at-table .context-rail .turn-number strong{font-size:24px}
+  .app.at-table .context-rail .turn-current{gap:7px;min-width:0}
+  .app.at-table .context-rail .turn-current>div{min-width:0}
+  .app.at-table .context-rail .turn-current strong{font-size:16px;white-space:normal;line-height:1.35;overflow-wrap:anywhere}
+  .app.at-table .context-rail .turn-current span:not(.turn-color){font-size:12px;line-height:1.45;white-space:normal}
+  .app.at-table .context-rail .turn-next{grid-column:1/-1;position:static;max-width:none;padding-top:8px;border-top:1px solid var(--table-line);flex-direction:row;gap:9px;justify-content:space-between;align-items:center}
+  .app.at-table .context-rail .turn-next>span{font-size:10px;white-space:nowrap}
+  .app.at-table .context-rail .turn-next strong{font-size:14px;max-width:110px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .app.at-table .context-rail .turn-action-dock{height:auto;padding:0 0 12px}
+  .app.at-table .context-space{display:flex;align-items:center;gap:9px;margin:0 0 8px;width:100%;padding:11px 10px;border:1px solid var(--table-line);border-radius:9px;background:var(--table-panel);color:var(--table-ink);text-align:left}
+  .app.at-table .context-space>i{width:4px;align-self:stretch;min-height:28px;border-radius:2px;flex-shrink:0}
+  .app.at-table .context-space>span{display:flex;flex-direction:column;gap:7px;min-width:0;flex:1}
+  .app.at-table .context-space small{font-size:9px;letter-spacing:.8px;color:var(--table-muted)}
+  .app.at-table .context-space strong{font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+  .app.at-table .context-space b{font-size:14px;font-weight:650;color:var(--table-gold)}
+  .app.at-table .context-space .context-inspect{display:flex;align-items:center;gap:6px;font-size:13px;line-height:1.4;color:var(--table-muted)}
+  .app.at-table .context-space .context-inspect b{margin-left:auto}
+  .app.at-table .context-space .context-inspect>svg:last-child{margin-left:auto}
+  .app.at-table .context-space:disabled{opacity:1}
+  .app.at-table .context-actions{display:flex;flex-direction:column;gap:8px}
+  .app.at-table .context-actions>.btn{justify-content:flex-start;min-height:46px;padding:10px 13px;font-size:14px;background:var(--table-panel);color:var(--table-ink);border-color:var(--table-line)}
+  .app.at-table .context-rail .turn-action-dock .action-bar{display:flex;flex-direction:column;align-items:stretch;gap:14px;min-height:0;height:auto;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+  .app.at-table .context-rail .turn-action-dock .action-copy>strong{display:none}
+  .app.at-table .context-rail .turn-action-dock .action-copy:not(.has-turn-instructions)>span{display:none}
+  .app.at-table .context-rail .presenting-action .action-copy>strong,.app.at-table .context-rail .presenting-action .action-copy>span{display:block}
+  .app.at-table .context-rail .turn-action-dock .action-copy.has-turn-instructions>strong,.app.at-table .context-rail .lobby-action .action-copy>strong,.app.at-table .context-rail .winner-action .action-copy>strong{display:block;font-size:17px}
+  .app.at-table .context-rail .action-icon,.app.at-table .context-rail .action-player-token{display:none}
+  .app.at-table .context-rail .action-copy>span{font-size:14px;line-height:1.6}
+  .app.at-table .context-rail .action-copy .turn-countdown{font-size:13px;white-space:normal}
+  .app.at-table .context-rail .action-copy .turn-countdown b{font-size:16px;white-space:nowrap}
+  .app.at-table .context-rail .action-buttons,.app.at-table .context-rail .auction-bidding{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+  .app.at-table .context-rail .action-bar .btn{width:100%;min-width:0;white-space:normal;min-height:47px;padding:11px 12px;font-size:15px}
+  .app.at-table .context-rail .action-bar .roll-button{font-size:18px;min-height:56px;padding-inline:8px}
+  .app.at-table .context-rail .shared-game-decision{position:static;transform:none;width:auto;max-height:none;margin:0 0 12px;padding:13px 11px;border:1px solid var(--table-line);border-radius:10px;background:var(--table-panel);box-shadow:var(--table-shadow);overflow:visible}
+  .app.at-table .context-rail .shared-game-decision .action-bar{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+  .app.at-table .context-rail .shared-game-decision .action-copy>strong{font-size:20px;line-height:1.35;letter-spacing:-.4px}
+  .app.at-table .context-rail .decision-eyebrow{font-size:10px;line-height:1.5;letter-spacing:.7px;padding-bottom:0;margin-bottom:13px;border:0}
+  .app.at-table .context-rail .decision-eyebrow>span{display:none}
+  .app.at-table .context-rail .waiting-chip{justify-content:center;width:100%;white-space:normal;font-size:13px}
+  .app.at-table .context-rail .bid-input,.app.at-table .context-rail .building-auction-target{width:100%;max-width:none}
+  .app.at-table .context-rail .purchase-rule strong{font-size:13px}
+  .app.at-table .context-rail .purchase-rule small{font-size:12px}
+  .app.at-table .context-rail .lobby-action .btn{font-size:14px}
+  .app.at-table .game-bottom-bar{grid-column:1/-1;grid-row:2;min-height:0;padding:0;border:0;border-radius:0;gap:10px;background:none;box-shadow:none}
+  .app.at-table .game-bottom-bar .player-hud{gap:8px;padding:5px 10px;background:var(--table-panel);border:1px solid var(--table-line);border-radius:10px;min-height:50px}
+  .app.at-table .game-bottom-bar .hud-token{width:34px;height:34px}
+  .app.at-table .game-bottom-bar .player-hud strong{font-size:22px}
+  .app.at-table .game-bottom-bar .player-hud>div>span{font-size:12px}
+  .app.at-table .game-bottom-bar .hud-property-button{font-size:11px;padding:7px}
+  .app.at-table .game-bottom-bar .hud-property-button strong{font-size:14px}
+  .app.at-table .game-bottom-bar .hud-card-button{font-size:11px;min-height:36px;padding:6px 8px}
+  .app.at-table .game-bottom-bar .hud-card-button strong{font-size:15px}
+  .app.at-table .game-bottom-bar .send-money-button{font-size:12px;padding:9px 10px}
+  .app.at-table .game-tools{gap:3px;padding:3px 5px;background:var(--table-panel);border:1px solid var(--table-line);border-radius:10px;min-height:50px}
+  .app.at-table .drawer-tabs{gap:2px}
+  .app.at-table .drawer-tabs>button{flex-direction:row;min-width:44px;min-height:44px;padding:7px 9px;gap:6px}
+  .app.at-table .drawer-tabs>button>span{font-size:12px}
+  .app.at-table .emote-tools-button{flex-direction:row;min-width:44px;min-height:44px;font-size:12px;gap:6px}
+  .app.at-table .new-contract-button{display:none}
+  .app .modal.property-modal{width:960px;max-width:calc(100vw - 36px)}
+  .app .modal.contract-composer{width:1050px;max-width:calc(100vw - 36px)}
+  .app .modal.settings-modal{width:650px;max-width:calc(100vw - 36px)}
+  .app.at-table .game-drawer{right:204px;top:66px;bottom:84px;width:min(460px,calc(100vw - 440px))}
+}
+@media(min-width:1600px){.app.at-table .game-layout.immersive-layout{grid-template-columns:204px minmax(0,1fr) 192px;padding:16px;gap:16px}.app.at-table .player-rail .player-card{min-height:94px}.app.at-table .game-drawer{right:224px;width:480px}}
+
+@media(max-width:600px),(max-width:1000px) and (max-height:500px) and (pointer:coarse){
+  .app.at-table .app-header{background:linear-gradient(color-mix(in srgb,var(--table-panel) 85%,transparent),transparent);box-shadow:none}
+  .app.at-table .header-nav{background:var(--table-panel);border-color:var(--table-line);box-shadow:var(--table-shadow)}
+  .app.at-table .turn-strip,.app.at-table .player-hud,.app.at-table .turn-action-dock .action-bar,.app.at-table .shared-game-decision{background:color-mix(in srgb,var(--table-panel) 96%,transparent);border-color:var(--table-line);box-shadow:var(--table-shadow)}
+  .app.at-table .turn-strip.your-turn{border-color:var(--table-gold)}
+  .app.at-table .game-drawer,.app.at-table .modal{box-shadow:none}
+}

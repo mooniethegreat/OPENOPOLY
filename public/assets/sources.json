@@ -1,0 +1,63 @@
+{
+  "retrievedAt": "2026-10-14",
+  "assets": [
+    {
+      "files": [
+        "reference/classic-set.png",
+        "reference/deeds-1.png",
+        "reference/deeds-2.png",
+        "reference/deeds-3.png",
+        "reference/deeds-4.png"
+      ],
+      "source": "User supplied reference attachments",
+      "use": "Original board photograph displayed with CSS rotation/cropping; metallic token sprites; source deed scans. Original files preserved without raster modifications.",
+      "verification": "The Boardwalk deed scan incorrectly labels house cost $20; engine uses verified $200."
+    },
+    {
+      "files": [
+        "reference/inland-empire-box.jpg",
+        "reference/inland-empire-detail.jpg",
+        "reference/inland-empire-text.jpg"
+      ],
+      "source": "https://www.ebay.com.sg/itm/165409763674",
+      "imageUrls": [
+        "https://i.ebayimg.com/images/g/g8oAAOSwQB5iRJlA/s-l1600.jpg",
+        "https://i.ebayimg.com/images/g/Rg0AAOSw7dtiRJkT/s-l1200.jpg",
+        "https://i.ebayimg.com/images/g/6IIAAOSwSyhiRJkR/s-l1200.jpg"
+      ],
+      "use": "Inland Empire board ordering, names, visible prices, two title deeds, two Contingency card effects, edition packaging reference and in-game logo art."
+    },
+    {
+      "files": [
+        "card-art/manifest.json",
+        "card-art/*"
+      ],
+      "source": "https://github.com/donutheist/monopoly-vectors",
+      "use": "Classic Chance and Community Chest reference art. Detailed per-card source and historical substitutions are in the local card-art manifest.",
+      "provenance": "Physical card scans reconstructed by repository author. No formal repository license identified; not represented as official or freely licensed."
+    }
+  ],
+  "ruleReferences": [
+    {
+      "url": "https://instructions.hasbro.com/en-us/instruction/monopoly-game",
+      "label": "Hasbro official Classic game instructions"
+    },
+    {
+      "url": "https://monopoly.fandom.com/wiki/List_of_Monopoly_Properties",
+      "label": "User supplied property reference",
+      "status": "Direct automated retrieval returned 402; not relied on as sole source."
+    }
+  ],
+  "inlandEditionLimits": "Playable researched adaptation. Missing original deed economics and card effects explicitly use classic fallback values. Publisher-specific verified differences are implemented in the engine. No claim of a full original physical-deck transcription.",
+  "customization": {
+    "edition": "inland",
+    "propertyId": 1,
+    "name": "The Resort",
+    "description": "Apartment complex",
+    "replaces": "The Mule Car",
+    "price": 70,
+    "economics": "Original slot retained",
+    "source": "Explicit user request"
+  },
+  "ownership": "MONOPOLY and original assets belong to their respective owners. The supplied materials and sourced reference photographs are used for this user-requested private recreation."
+}

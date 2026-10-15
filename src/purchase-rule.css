@@ -1,0 +1,13 @@
+.purchase-rule { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0; color: var(--ui-fg,#eeeede); text-align: left; cursor: pointer; }
+.purchase-rule>input { margin: 3px 0 0; flex-shrink: 0; }
+.purchase-rule>span { display: block; min-width: 0; }
+.purchase-rule strong { display: block; font-size: 14px; line-height: 1.35; font-weight: 650; }
+.purchase-rule small { display: block; margin-top: 3px; color: var(--ui-muted,#9bafa2); font-size: 12px; line-height: 1.4; }
+.lobby-action .purchase-rule { max-width: 430px; margin-bottom: 0; }
+.pass-purchase-button { white-space: normal; }
+@media(max-width: 359px) {
+  .game-stage:has(.pass-purchase-button) .scene-camera-bar [aria-label="Overview"] .camera-label-compact { display: none; }
+  .game-stage:has(.pass-purchase-button) .scene-camera-bar { flex-wrap: nowrap; }
+  .game-stage:has(.pass-purchase-button) .scene-location { max-width: calc(100% - 100px); }
+  .game-stage:has(.pass-purchase-button) .scene-view-controls { top: 18px; }
+}

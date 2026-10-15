@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-15",
+  "purpose": "Cinematic presentation assets for the existing live Monopoly application; no game state is baked into artwork.",
+  "assets": [
+    {
+      "id": "evening-lounge-original",
+      "path": "/assets/cinematic/evening-lounge-original.png",
+      "file": "public/assets/cinematic/evening-lounge-original.png",
+      "source": "Original text-to-image generation using the built-in image_gen tool in this task.",
+      "permission": "Created for this project under the user's explicit asset-creation authorization. No purchases, subscriptions, source-image uploads, project-file uploads, or third-party image excerpts were used.",
+      "modifications": "Original PNG copied unchanged from the tool output; no raster editing.",
+      "width": 1672,
+      "height": 941,
+      "byteLength": 1864151,
+      "sha256": "8da89d4160b31bb138b7953e8a8737364208dcfb373987ac96ca5bf6583b98f7",
+      "usage": "Menu/lobby, settings, and restrained gameplay atmosphere behind the live CSS3D board. The image contains an empty table and lounge only.",
+      "constraints": "Background only. Never use as a board hit map, interface texture, or game-state source. Keep tabletop/board contact shadows and all controls live.",
+      "prompt": "Use case: photorealistic-natural. Asset type: original full-screen environmental backdrop for a live tabletop browser game. Create a wide 16:9 cinematic interior image, approximately 1920x1080 or higher landscape. A beautifully furnished evening lounge with softly defocused shelves and books, a few leafy plants, warm shaded table lamps and cool blue night windows in the distant background. In the foreground, a large completely EMPTY dark walnut game table extends from the lower edge across the entire lower two thirds of the frame; the rear edge of the tabletop meets the soft room around 34% of the image height. The camera is slightly elevated looking downward across the table with natural perspective; the front/near edge is out of frame. The center and right tabletop are broad, clean, unobstructed negative space for an interactive game board added later. Leave the upper-left area relatively dark and quiet for a separately rendered menu. Lighting: broad warm lamp light gently pools across the center-right walnut, restrained soft reflected highlights, natural fine long directional wood grain at real furniture scale, darker corners, balanced exposure, no harsh spotlight, rich dark brown rather than orange. The room is atmosphere, tasteful and softly out of focus; tabletop remains clearly textured without becoming busy. Premium realistic interior photography and physical materials, no stylized paint. Constraints: NO game board, NO tabletop props of any kind, NO game pieces, NO dice, NO cards, NO chips, NO people, NO hands, NO UI, NO panels, NO captions, NO writing, NO lettering, NO logos, NO watermarks. One coherent image, not a collage.",
+      "status": "Generated and copied unchanged; integrated and visually verified in cycle 1 menu and cycle 2 desktop match. Cycle 2 phone backdrop regression reported for correction; final capture acceptance pending."
+    },
+    {
+      "id": "procedural-metal-token-set",
+      "files": ["src/token-geometry.js", "src/MeshToken.jsx", "src/Board.jsx"],
+      "source": "Original procedural polygon model code authored for this project in the requested redesign.",
+      "permission": "Project-authored source under the user's explicit model and presentation creation request; no purchased or imported mesh assets.",
+      "modelIds": ["hat", "car", "dog", "ship", "cat", "penguin", "thimble", "duck"],
+      "scale": "Approximately 1-unit token height, projected into a 100 by 100 SVG viewBox; display size set by the existing Token component.",
+      "loadingPath": "Bundled module import through Board Token to MeshToken and token-geometry.js; no external mesh download.",
+      "rendering": "Cached original 3D polygon geometry is camera-projected to shaded SVG polygons with silver or gold palette. It is not a full WebGL/PBR renderer or a photorealistic model claim.",
+      "fallback": "Token fallback=true retains existing user-supplied classic-set photograph crop; its original provenance remains in /assets/sources.json.",
+      "status": "Cycle 2 actual board/portrait integration and 48/68/112px contact sheet reviewed. Hat, thimble and ship identities clear; animal/car silhouette refinements requested before final acceptance."
+    },
+    {
+      "id": "articulated-miniature-city",
+      "files": ["src/Board.jsx", "src/board-scene.css"],
+      "source": "Project-authored CSS 3D building planes and decorative layouts upgraded from the existing live renderer.",
+      "permission": "Original project source authored and modified under the user's presentation migration request; no external model import.",
+      "scale": "Ten named decorative silhouettes in the rear half of the existing 960-unit board world, with shared planes, setbacks, cornices, varied caps and facades.",
+      "loadingPath": "Bundled Board component and board-scene stylesheet.",
+      "constraints": "Decorative city only. Authoritative green/red property development pieces remain separate and game-data-driven.",
+      "status": "Actual cycle 2 gameplay shows changed roof/massing silhouettes with visible rear property strip. Final lighting and occlusion acceptance pending; stylized CSS architecture is not described as photorealistic."
+    },
+    {
+      "id": "property-miniature-vignettes",
+      "files": ["src/CinematicViews.jsx", "src/cinematic-views.css"],
+      "source": "Original inline SVG architectural illustrations authored for property, railroad and utility inspection.",
+      "permission": "Original project source created under the user's property illustration request; no copied reference collage fragments.",
+      "scale": "420 by 300 SVG viewBox, responsive display with real property group color.",
+      "loadingPath": "Bundled PropertyVignette component used by PropertyModal.",
+      "status": "Actual property screenshot reviewed; consistent warm stone/slate visual language. Inspector layout refinement remains pending at cycle 2."
+    }
+  ],
+  "relatedManifests": [
+    "/assets/sources.json",
+    "/assets/card-art/manifest.json"
+  ],
+  "artGapsAtCreation": [
+    "Original procedural token meshes projected to shaded SVG are in implementation; inspect silhouettes, metal shading, shared portrait identity, and gold results finish before claiming completion.",
+    "Articulated city kit and static property illustration are in implementation; inspect actual geometry and rear-row occlusion before visual acceptance.",
+    "The CSS3D world is not a ray-traced photorealistic renderer. Assess the actual delivered composition and material quality rather than claiming visual parity without captures."
+  ],
+  "typography": {
+    "fonts": ["DM Sans", "Manrope", "Arial/system fallbacks"],
+    "source": "Existing project Google Fonts import in src/styles.css retained.",
+    "substitution": "Existing DM Sans/Manrope retained instead of the reference's preferred Montserrat. No new font binaries or font dependency added; board label measurement remains aligned with existing DM Sans metrics."
+  }
+}

@@ -1,0 +1,55 @@
+import { chromium, expect } from '@playwright/test';
+import { build } from 'esbuild';
+import express from 'express';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { createApp } from '../server/app.js';
+import { createGame, chargePlayer, applyAction } from '../shared/engine.js';
+
+const directory = process.argv[2] || '.runtime/inspection/cinematic-final'; await mkdir(directory, { recursive: true });
+const bundle = await build({ entryPoints: ['src/main.jsx'], bundle: true, write: false, outdir: '.runtime/cinematic-capture-bundle', format: 'iife', external: ['/assets/*'], define: { 'process.env.NODE_ENV': '"production"' }, logLevel: 'silent' });
+const server = createApp({ storePath: '', distPath: '' });
+server.app.get('/', (req, res) => res.type('html').send('<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="/qa.css"><script defer src="/qa.js"></script></head><body><div id="root"></div></body></html>'));
+server.app.get('/qa.js', (req, res) => res.type('js').send(bundle.outputFiles.find(file => file.path.endsWith('.js')).text));
+server.app.get('/qa.css', (req, res) => res.type('css').send(bundle.outputFiles.find(file => file.path.endsWith('.css')).text));
+server.app.use(express.static('public'));
+const address = await server.listen(0, '127.0.0.1'), origin = `http://127.0.0.1:${address.port}`;
+const post = async (path, body) => { const response = await fetch(origin + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (!response.ok) throw new Error(await response.text()); return response.json(); };
+const host = await post('/api/rooms', { name: 'Alex Morgan', token: 'hat', theme: 'classic' });
+const guest = await post(`/api/rooms/${host.room.code}/join`, { name: 'Blair', token: 'dog' });
+await post(`/api/rooms/${host.room.code}/join`, { name: 'Chloe', token: 'car' });
+for (const name of ['Danielle Longworth', 'Elliot Montgomery', 'Francesca Washington', 'Gabriel Sterling', 'Harper Wainwright']) await post(`/api/rooms/${host.room.code}/join`, { name });
+server.store.transaction(data => { const room = data.rooms[host.room.code]; room.game = createGame(room.players, { seed: 42, firstPlayerId: host.playerId }); room.status = 'playing'; room.version += 1; room.decisionVersion += 1; for (const id of [1,3]) room.game.properties[id].ownerId = host.playerId; });
+const browser = await chromium.launch({ channel: 'chrome', headless: true }), contexts = [], errors = [], captures = [], checks = [];
+const capture = async (page, name) => { await page.screenshot({ path: `${directory}/${name}.png`, animations: 'disabled' }); captures.push(name); console.log(`Captured ${name}`); };
+const seated = async (user, mobile = false) => { const code=user.room.code; const context = await browser.newContext({ viewport: mobile ? { width: 390, height: 844 } : { width: 1366, height: 768 }, isMobile: mobile, hasTouch: mobile }); contexts.push(context); await context.addInitScript(seat => { localStorage.setItem('monopoly-table-sessions-v2', JSON.stringify({ [seat.roomCode]: seat })); localStorage.setItem('monopoly-table-active-v2', seat.roomCode); }, { roomCode: code, playerId: user.playerId, sessionToken: user.sessionToken }); const page = await context.newPage(); page.on('pageerror', error => errors.push(error.message)); await page.goto(`${origin}/?room=${code}`); await expect(page.locator('.connection')).toHaveText('CONNECTED'); return page; };
+try {
+  const menuContext = await browser.newContext({ viewport: { width: 1366, height: 768 } }); contexts.push(menuContext); const menu = await menuContext.newPage(); menu.on('pageerror', error => errors.push(error.message)); await menu.goto(origin); await expect(menu.getByTestId('cinematic-menu')).toBeVisible(); await capture(menu, 'menu-1366');
+  const local = await seated(host); await expect(local.getByRole('button', { name: 'Roll dice', exact: false })).toBeEnabled(); await capture(local, 'match-local-1366');
+  await expect(local.locator('.app')).toHaveAttribute('data-palette','graphite');
+  checks.push({kind:'default-colors',values:await local.evaluate(()=>Object.fromEntries(['.player-name','.player-money','.turn-next','.roll-button','.player-card:not(.current)'].map(selector=>{const element=document.querySelector(selector),style=getComputedStyle(element);return[selector,{color:style.color,backgroundColor:style.backgroundColor,backgroundImage:style.backgroundImage,fontSize:style.fontSize}]})))});
+  await local.locator('main>.player-rail .player-card').last().scrollIntoViewIfNeeded();await expect(local.locator('main>.player-rail .player-card').last()).toBeInViewport();await capture(local,'eight-seats-last-player-1366');await local.locator('main>.player-rail .player-card').first().scrollIntoViewIfNeeded();
+  const waiting = await seated(guest); await expect(waiting.getByTestId('context-rail')).toContainText('Alex Morgan'); await capture(waiting, 'match-waiting-1366');
+  const phone = await seated(host, true); await capture(phone, 'phone-overview-390');
+  const lobbyHost=await post('/api/rooms',{name:'Lobby host',theme:'classic'});await post(`/api/rooms/${lobbyHost.room.code}/join`,{name:'Ready player'});const lobby=await seated(lobbyHost);await expect(lobby.getByRole('button',{name:'Start game',exact:true})).toBeEnabled();await capture(lobby,'lobby-1366');
+  await local.getByRole('tab', { name: /^Properties/ }).click(); await local.locator('.portfolio-property').filter({ hasText: 'Mediterranean Avenue' }).click(); await expect(local.getByRole('dialog')).toHaveAttribute('aria-label', 'Mediterranean Avenue'); await capture(local, 'property-1366');
+  await local.getByRole('button', { name: 'Close dialog', exact: true }).click(); await local.getByRole('button', { name: 'Close drawer', exact: true }).click();
+  await local.getByRole('button', { name: 'Request a contract', exact: true }).click(); await capture(local, 'contract-1366'); await local.getByRole('button', { name: 'Close dialog', exact: true }).click();
+  await local.getByRole('button', { name: 'Room and profile settings', exact: true }).click(); await capture(local, 'settings-1366');
+  await local.getByRole('button', { name: 'Audio', exact: true }).click(); await capture(local, 'audio-settings-1366');
+  await local.getByRole('button',{name:'Appearance',exact:true}).last().click();
+  const decisionVersion=server.store.data.rooms[host.room.code].decisionVersion;
+  for(const [name,id] of [['Forest','forest'],['Slate','slate'],['Ocean','ocean'],['Burgundy','burgundy'],['Graphite','graphite']]){await local.getByRole('button',{name,exact:true}).click();await expect(waiting.locator('.app')).toHaveAttribute('data-palette',id);}
+  if(server.store.data.rooms[host.room.code].decisionVersion!==decisionVersion)throw new Error('Appearance changed gameplay decision version');checks.push({kind:'appearance',allFiveShared:true,gameplayDecisionUnchanged:true});
+  await local.getByRole('button',{name:'Ocean',exact:true}).click();await local.getByRole('button',{name:'Light',exact:true}).click();await expect(phone.locator('.app')).toHaveAttribute('data-mode','light');await capture(local,'light-ocean-settings-1366');await capture(phone,'light-ocean-phone-390');await local.getByRole('button',{name:'Graphite',exact:true}).click();await local.getByRole('button',{name:'Dark',exact:true}).click();
+  await local.getByRole('button', { name: 'Close dialog', exact: true }).click();
+  await phone.setViewportSize({ width:320,height:568 }); await capture(phone, 'phone-overview-320x568');
+  await phone.setViewportSize({ width:844,height:390 }); await capture(phone, 'phone-landscape-844');
+  for(const viewport of [{width:1920,height:1080},{width:1440,height:900},{width:911,height:512}]){await local.setViewportSize(viewport);await expect(local.getByRole('button',{name:'Roll dice',exact:false})).toBeInViewport();const layout=await local.evaluate(()=>({width:innerWidth,scrollWidth:document.documentElement.scrollWidth}));checks.push({kind:'responsive',viewport,...layout});if(layout.scrollWidth>layout.width)throw new Error(`Horizontal overflow at ${viewport.width}`);await capture(local,`match-${viewport.width}x${viewport.height}`);}await local.setViewportSize({width:1366,height:768});
+  const inland=await post('/api/rooms',{name:'Inland host',theme:'inland-empire',token:'dog'});await post(`/api/rooms/${inland.room.code}/join`,{name:'Inland observer'});server.store.transaction(data=>{const room=data.rooms[inland.room.code];room.game=createGame(room.players,{edition:'inland',seed:42,firstPlayerId:inland.playerId});room.status='playing';room.version+=1;room.decisionVersion+=1;});const inlandPage=await seated(inland);await expect(inlandPage.getByTestId('context-rail')).toContainText('Your turn');await capture(inlandPage,'inland-match-1366');
+  server.store.transaction(data => { const room=data.rooms[host.room.code]; for(const player of room.game.players.filter(player=>player.id!==host.playerId&&!player.bankrupt)){chargePlayer(room.game,player.id,null,100000,'Fixture final bank bill');applyAction(room.game,player.id,{type:'bankrupt'});}room.status='finished';room.version+=1;room.decisionVersion+=1;});
+  server.io.to(host.room.code).emit('room:state',server.publicRoom(server.store.data.rooms[host.room.code]));
+  await expect(local.getByTestId('match-results')).toBeVisible(); await capture(local, 'results-1366');
+  await expect(waiting.getByRole('dialog',{name:'Alex Morgan wins',exact:true})).toBeVisible();
+  await local.getByRole('button',{name:'Create another room',exact:true}).click();await expect(local.getByTestId('cinematic-menu')).toBeVisible();if(server.store.data.rooms[host.room.code].game.status!=='finished')throw new Error('Finished room was reset');
+  checks.push({kind:'results',winner:host.playerId,finishedRoomPreserved:true});await writeFile(`${directory}/report.json`, JSON.stringify({ captures, checks, errors }, null, 2)); if (errors.length) throw new Error(errors.join('\n'));
+} finally { await Promise.all(contexts.map(context => context.close())); await browser.close(); await server.close(); }

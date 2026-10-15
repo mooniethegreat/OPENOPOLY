@@ -1,0 +1,24 @@
+.group-development{margin:18px 0;padding:16px;border:1px solid var(--ui-border);border-radius:11px;background:var(--ui-panel);color:var(--ui-fg)}
+.app .group-development h4{display:flex;align-items:center;gap:8px;font-size:16px;line-height:1.5;margin:0 0 14px}
+.group-development h4 svg{flex-shrink:0;color:var(--ui-accent)}
+.group-building-levels{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:11px}
+.group-building-levels li{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;font-size:14px;line-height:1.5}
+.group-building-levels li>span{display:flex;align-items:baseline;gap:6px;min-width:0;flex:1;overflow-wrap:anywhere}
+.group-building-levels i{display:inline-block;width:5px;height:14px;border-radius:2px;flex-shrink:0}
+.group-building-levels strong{font-size:13px;white-space:nowrap;color:var(--ui-accent)}
+.app .group-development .form-label{font-size:14px;margin-bottom:15px}
+.app .group-development select{font-size:15px;padding:11px 9px}
+.group-build-cost{display:flex;align-items:center;justify-content:space-between;gap:10px;line-height:1.5;margin-bottom:10px}
+.group-build-cost>span{font-size:14px;color:var(--ui-muted)}
+.group-build-cost>strong{font-size:25px;font-variant-numeric:tabular-nums}
+.group-build-stock,.group-build-error{font-size:12px;line-height:1.7;margin:10px 0 14px;color:var(--ui-muted)}
+.group-build-error{color:var(--ui-danger)}
+.group-development .group-build-button{width:100%;font-size:15px;white-space:normal;line-height:1.5}
+.app .group-development .btn{font-size:15px;justify-content:center;min-height:46px}
+.group-build-review{border-top:1px solid var(--ui-border);padding-top:15px}
+.group-build-review>strong{font-size:15px}
+.group-build-review p{font-size:14px;line-height:1.7;margin:9px 0 14px}
+.group-build-review>div{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.group-build-review .btn{font-size:14px;white-space:normal;line-height:1.5;flex:1}
+.group-build-complete{display:flex;align-items:center;gap:7px;font-size:14px;line-height:1.6;color:var(--ui-accent);margin:0}
+@media(max-width:600px){.group-development{padding:14px}.group-build-review>div{flex-direction:column}.group-build-review .btn{min-height:44px}}

@@ -1,0 +1,40 @@
+import React, { useId, useState } from 'react';
+import { ArrowRight, Crown, SlidersHorizontal, Sparkles, Trophy, Volume2 } from 'lucide-react';
+import { Token } from './Board.jsx';
+import { Modal } from './App.jsx';
+import { useGame } from './game-context.jsx';
+import AppearanceControls from './Appearance.jsx';
+import { money } from './themes.js';
+import './cinematic-views.css';
+
+export function PropertyVignette({ space }) {
+  const id = useId().replaceAll(':', '');
+  const color = space.color || '#9c8c64';
+  const station = space.type === 'railroad', utility = space.type === 'utility';
+  return <div className="property-vignette" style={{ '--property-color': color }} role="img" aria-label={`Architectural miniature for ${space.name}`}>
+    <svg viewBox="0 0 420 300" aria-hidden="true"><defs><linearGradient id={`${id}-wall`} x2=".7" y2="1"><stop stopColor="#dac5a2" /><stop offset="1" stopColor="#9a7b59" /></linearGradient><linearGradient id={`${id}-glass`} x2=".3" y2="1"><stop stopColor="#f4d48e" /><stop offset="1" stopColor="#7d623e" /></linearGradient><radialGradient id={`${id}-light`}><stop stopColor="#e0b672" stopOpacity=".26" /><stop offset="1" stopColor="#e0b672" stopOpacity="0" /></radialGradient></defs>
+      <ellipse cx="214" cy="165" rx="203" ry="126" fill={`url(#${id}-light)`} /><ellipse cx="218" cy="245" rx="150" ry="24" fill="#000" opacity=".35" />
+      <path d="m61 220 181-55 124 57-180 59Z" fill="#6c6652" stroke="#a8a081" /><path d="m68 225 174-51 113 49-169 48Z" fill="#3e4d38" /><path d="m124 241 111-34 56 26-110 34Z" fill="#c3b28e" />
+      {station ? <><path d="m116 156 109-35 95 44v58l-109 35-95-44Z" fill="#765842" /><path d="m116 156 109-35v62l-109 31Z" fill={`url(#${id}-wall)`} /><path d="m225 121 95 44v58l-95-40Z" fill="#7b5e45" /><path d="m104 153 118-70 108 69-105-18Z" fill={color} stroke="#c2b18a" strokeWidth="3" /><path d="m222 83 3 51-121 19Z" fill="#9b8667" /><circle cx="174" cy="148" r="17" fill="#e5d4aa" stroke="#5f4c38" strokeWidth="3" /><path d="M174 137v12l8 4" fill="none" stroke="#514333" strokeWidth="2" />{[134, 184].map(x => <path key={x} d={`M${x} 178v35l22-6v-35Z`} fill={`url(#${id}-glass)`} stroke="#5c4a37" strokeWidth="3" />)}<path d="m79 249 212-62m-199 71 212-63" stroke="#d7c8a5" strokeWidth="3" /></> : utility ? <><path d="m113 165 115-36 87 42v58l-115 34-87-43Z" fill={`url(#${id}-wall)`} /><path d="m228 129 87 42v58l-87-42Z" fill="#6e6656" /><path d="m108 160 118-38 93 45-119 37Z" fill="#9a9984" stroke="#c7c1a6" strokeWidth="2" /><path d="m137 157 18-5V77l-18 5Z" fill="#b7ae96" /><path d="m155 77 17 9v75l-17-9Z" fill="#756c57" /><path d="m137 82 18-5 17 9-18 5Z" fill="#d0c5a5" /><path d="m195 151 17-5v-43l-17 5Z" fill="#c3b79a" /><path d="m212 103 15 8v43l-15-8Z" fill="#756c57" />{[129, 163, 198].map(x => <path key={x} d={`M${x} 196v24l19-6v-24Z`} fill={`url(#${id}-glass)`} stroke="#514e40" strokeWidth="3" />)}<path d="m255 194 15-18-5 17 15-3-17 23 4-19Z" fill="#f0ce79" /></> : <>
+        <path d="m109 113 116-35 90 43v105l-116 35-90-43Z" fill={`url(#${id}-wall)`} /><path d="m225 78 90 43v105l-90-42Z" fill="#756048" /><path d="m102 110 123-40 99 48-125 41Z" fill="#aa9b7b" stroke="#d5c6a0" strokeWidth="2" /><path d="m111 102 113-36 90 42-114 37Z" fill={color} /><path d="m126 99 96-29 74 35-96 31Z" fill="#4e4c3c" opacity=".35" />
+        {[0, 1, 2].map(row => [0, 1, 2, 3].map(column => <g key={`${row}:${column}`}><path d={`m${123 + column * 23} ${133 + row * 29 - column * 7} 14-4v18l-14 4Z`} fill={`url(#${id}-glass)`} stroke="#746147" strokeWidth="2" /><path d={`m${126 + column * 23} ${136 + row * 29 - column * 7} 8-2`} stroke="#f7dfa4" strokeOpacity=".6" /></g>))}
+        {[0, 1, 2].map(row => [0, 1, 2].map(column => <path key={`${row}:${column}`} d={`m${239 + column * 22} ${129 + row * 29 + column * 10} 12 6v17l-12-6Z`} fill="#c3a36b" stroke="#544b3b" strokeWidth="2" />))}
+        <path d="m167 222 26-8v39l-26 8Z" fill="#4d4534" stroke="#c6b18a" strokeWidth="3" /><path d="m172 225 15-5v20l-15 5Z" fill={`url(#${id}-glass)`} /><path d="m104 219 95 46 121-37" fill="none" stroke="#d6bf91" strokeWidth="5" />
+      </>}
+      {[{ x: 84, y: 208 }, { x: 334, y: 221 }, { x: 291, y: 248 }].map(({ x, y }, index) => <g key={x}><path d={`M${x} ${y}v25`} stroke="#756045" strokeWidth="5" /><ellipse cx={x + 4} cy={y + 24} rx="18" ry="5" fill="#0003" /><ellipse cx={x} cy={y - 3} rx={index ? 14 : 18} ry={index ? 19 : 25} fill="#38503a" /><ellipse cx={x - 4} cy={y - 9} rx={index ? 10 : 13} ry={index ? 15 : 20} fill="#627947" /></g>)}
+    </svg><span className="vignette-caption">{station ? 'Railway estate' : utility ? 'Utility works' : 'Property collection'}<i style={{ background: color }} /></span>
+  </div>;
+}
+
+export function MatchResults({ onClose, onNewGame }) {
+  const { game, playerId } = useGame();
+  const winner = game?.players.find(player => player.id === game.winnerId);
+  if (game?.status !== 'finished' || !winner) return null;
+  const deeds = Object.values(game.properties).filter(property => property.ownerId === winner.id).length;
+  return <Modal title={winner.id === playerId ? 'You win!' : `${winner.name} wins`} eyebrow="GAME COMPLETE" onClose={onClose} className="results-modal"><div className="results-view" data-testid="match-results"><div className="results-halo"><Crown size={30} /><Token token={winner.token} material="gold" size={138} /></div><div className="results-confetti" aria-hidden="true">{Array.from({ length: 12 }, (_, i) => <i key={i} style={{ '--confetti-index': i }} />)}</div><span className="result-winner-name">{winner.name}</span><p>The last player standing.</p><div className="results-stats"><div><span>Final cash</span><strong>{money(winner.cash)}</strong></div><div><span>Properties held</span><strong>{deeds}</strong></div><div><span>Table turns</span><strong>{game.turn}</strong></div></div><div className="results-actions"><button className="btn primary" onClick={onNewGame}>Create another room<ArrowRight size={17} /></button><button className="btn ghost" onClick={onClose}>View final board</button></div></div></Modal>;
+}
+
+export function SettingsSections({ audio, appearance, onAppearanceChange, appearanceDisabled, inRoom, isHost, gameContent = null, initialTab = 'appearance' }) {
+  const [tab, setTab] = useState(gameContent ? initialTab : initialTab === 'game' ? 'appearance' : initialTab);
+  return <div className="settings-sections"><nav className="segmented settings-tabs" aria-label="Settings groups">{gameContent && <button className={tab === 'game' ? 'active' : ''} onClick={() => setTab('game')}><SlidersHorizontal size={16} />Game</button>}<button className={tab === 'audio' ? 'active' : ''} onClick={() => setTab('audio')}><Volume2 size={16} />Audio</button><button className={tab === 'appearance' ? 'active' : ''} onClick={() => setTab('appearance')}><Sparkles size={16} />Appearance</button></nav>{tab === 'game' ? gameContent : tab === 'appearance' ? <AppearanceControls appearance={appearance} onChange={onAppearanceChange} disabled={appearanceDisabled} inRoom={inRoom} isHost={isHost} /> : <section className="audio-settings-section"><h3>Sound on this device</h3><p>Dice, footsteps, cards, payments and table activity.</p><label className="settings-row"><span><strong>Sound effects</strong><small>Saved in this browser</small></span><input type="checkbox" checked={!audio.muted} onChange={event => { audio.changeSettings({ muted: !event.target.checked }); if (event.target.checked) audio.activate(); }} /></label><label className="settings-row settings-volume"><span><strong>Volume</strong><small>{Math.round(audio.volume * 100)}%</small></span><input aria-label="Game sound volume" type="range" min="0" max="100" step="5" value={Math.round(audio.volume * 100)} onChange={event => audio.changeSettings({ volume: Number(event.target.value) / 100 })} /></label>{audio.status === 'unavailable' ? <p role="status">Audio is unavailable in this browser.</p> : audio.status !== 'ready' && !audio.muted && <button className="btn" onClick={() => audio.activate()}>Enable sound</button>}</section>}</div>;
+}
