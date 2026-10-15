@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-10-15",
-  "purpose": "Cinematic presentation assets for the existing live Monopoly application; no game state is baked into artwork.",
+  "purpose": "Cinematic presentation assets for the existing live Openopoly application; no game state is baked into artwork.",
   "assets": [
     {
       "id": "evening-lounge-original",

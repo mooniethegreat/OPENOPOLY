@@ -2,7 +2,7 @@
 
 Researched October 14, 2026. The host selects an edition in the lobby. Its board, prices, rules and card configuration are fixed when play starts.
 
-## Classic US Monopoly
+## Classic Openopoly · US rules
 
 Primary rules reference: [Hasbro's Monopoly Vintage instruction sheet](https://www.hasbro.com/common/instruct/Monopoly_Vintage.pdf). The implementation covers normal turns, doubles, GO, purchases, auctions, rent, jail, building supply, even development, mortgages, private trades, liquidation and bankruptcy. The classic board has 40 spaces and 28 purchasable deeds. Houses and hotels have separate finite inventories. Printed deed economics were checked against the user's supplied deed reference images; the Boardwalk building cost is $200, correcting the apparent $20 error in one supplied composite.
 
@@ -35,7 +35,7 @@ Two photographed Contingency effects are implemented with verified-effect metada
 
 ## Requested custom property: The Resort
 
-At the user's explicit request, **The Resort** apartment complex replaces **The Mule Car** at board position 1. The board remains 40 spaces. Its purchase price remains $70, with the same color group, rent table, mortgage and development costs already assigned to that slot. This is a user customization, not a property recovered from the physical Inland Empire-opoly box. The property's `originalName`, `customization`, and `verification.name = 'user-customization'` fields preserve that distinction; the edition's `customizations` list identifies the replacement for every player. The slot's unverified deed economics remain marked as classic fallbacks. Classic Monopoly is unaffected.
+At the user's explicit request, **The Resort** apartment complex replaces **The Mule Car** at board position 1. The board remains 40 spaces. Its purchase price remains $70, with the same color group, rent table, mortgage and development costs already assigned to that slot. This is a user customization, not a property recovered from the physical Inland Empire-opoly box. The property's `originalName`, `customization`, and `verification.name = 'user-customization'` fields preserve that distinction; the edition's `customizations` list identifies the replacement for every player. The slot's unverified deed economics remain marked as classic fallbacks. Classic Openopoly is unaffected.
 
 ## Inland Empire-opoly: publisher-family rules and limits
 

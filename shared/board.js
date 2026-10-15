@@ -115,7 +115,7 @@ export const INLAND_BOARD = BOARD.map((original, id) => {
 });
 
 export const EDITION_INFO = {
-  classic: { id: 'classic', name: 'Classic Monopoly', maxPlayers: 8, houseLabel: 'House', hotelLabel: 'Hotel', deckLabels: { chance: 'Chance', chest: 'Community Chest' }, verification: 'US classic economics with the traditional 2008 card set; digital rent collection is automatic.' },
+  classic: { id: 'classic', name: 'Classic Openopoly', maxPlayers: 8, houseLabel: 'House', hotelLabel: 'Hotel', deckLabels: { chance: 'Chance', chest: 'Community Chest' }, verification: 'US classic economics with the traditional 2008 card set; digital rent collection is automatic.' },
   inland: { id: 'inland', name: 'Inland Empire-opoly', maxPlayers: 6, houseLabel: 'City Block', hotelLabel: 'Key to the City', deckLabels: { chance: 'Contingency', chest: 'Big Fun' }, customizations: [{ propertyId: 1, name: 'The Resort', replaces: 'The Mule Car', price: 70, requestedBy: 'host' }], verification: 'Researched adaptation: original board names, prices, two deeds and two Contingency effects verified from product photographs. Custom property: The Resort apartment complex replaces The Mule Car at $70, preserving that slot’s economics. General rules follow a published Late for the Sky rulebook. Remaining rents, mortgages, building stock and card effects use explicitly marked classic fallbacks; the complete Inland Empire deck was not available online.' },
 };
 export function normalizeEdition(value) { return value === 'inland' || value === 'inland-empire' ? 'inland' : 'classic'; }

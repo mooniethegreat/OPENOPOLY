@@ -12,11 +12,11 @@ function Banknote({ value }) {
     <rect x="7" y="7" width="170" height="78" rx="2" fill="none" stroke="#61563c" strokeWidth="1.5" />
     <path d="M12 28V12h29M143 12h29v16M12 64v16h29M143 80h29V64" fill="none" stroke="#61563c" strokeWidth="2" />
     <ellipse cx="92" cy="47" rx="42" ry="26" fill="#fff8" stroke="#61563c" />
-    <text x="92" y="20" textAnchor="middle" fontFamily="Georgia,serif" fontSize="10" fontWeight="bold" fill="#423c2c" letterSpacing="1.4">MONOPOLY</text>
+    <text x="92" y="20" textAnchor="middle" fontFamily="Georgia,serif" fontSize="10" fontWeight="bold" fill="#423c2c" letterSpacing="1.4">OPENOPOLY</text>
     <text x="92" y="60" textAnchor="middle" fontFamily="Georgia,serif" fontSize="36" fontWeight="bold" fill="#423c2c">{value}</text>
     <text x="21" y="35" fontFamily="Georgia,serif" fontSize="18" fontWeight="bold" fill="#423c2c">{value}</text>
     <text x="163" y="72" textAnchor="end" fontFamily="Georgia,serif" fontSize="18" fontWeight="bold" fill="#423c2c">{value}</text>
-    <text x="92" y="80" textAnchor="middle" fontFamily="Arial,sans-serif" fontSize="6" fill="#423c2c" letterSpacing="1.5">MONOPOLY MONEY</text>
+    <text x="92" y="80" textAnchor="middle" fontFamily="Arial,sans-serif" fontSize="6" fill="#423c2c" letterSpacing="1.5">OPENOPOLY MONEY</text>
   </svg>;
 }
 

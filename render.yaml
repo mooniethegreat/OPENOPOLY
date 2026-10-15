@@ -1,0 +1,24 @@
+# Paid-service configuration for an initial client pilot. No service is created by this file alone.
+services:
+  - type: web
+    name: openopoly
+    runtime: node
+    plan: "0.5c-512mb"
+    numInstances: 1
+    autoDeployTrigger: "off"
+    buildCommand: npm ci --include=dev && npm test && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: ">=22.13.0 <23"
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: STORE_PATH
+        value: /var/data/rooms.json
+    disk:
+      name: openopoly-data
+      mountPath: /var/data
+      sizeGB: 1

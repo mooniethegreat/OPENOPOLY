@@ -78,7 +78,7 @@ export default class RecoveryBoundary extends React.Component {
     const { report, copied } = this.state;
     return <main className="view-recovery" aria-labelledby="view-recovery-title">
       <section className="view-recovery-card" role="alert">
-        <span className="view-recovery-brand">MONOPOLY ONLINE</span>
+        <span className="view-recovery-brand">OPENOPOLY ONLINE</span>
         <h1 id="view-recovery-title">The table view stopped.</h1>
         <p>Your saved seat and pending action records are kept in this browser. Reconnect to restore the table and check any pending result.</p>
         <div className="view-recovery-actions">

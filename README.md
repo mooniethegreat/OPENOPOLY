@@ -1,6 +1,6 @@
 # OPENOPOLY
 
-A multiplayer property trading game with a shared 3D board, synchronized dice and movement, contracts, chat, votes, reactions, and sound effects. React and Vite provide the UI; Express and Socket.IO run the authoritative game server. Rooms and guest seats persist across server restarts.
+Openopoly is a multiplayer property trading game with a shared 3D board, synchronized dice and movement, contracts, chat, votes, reactions, and sound effects. React and Vite provide the UI; Express and Socket.IO run the authoritative game server. Rooms and guest seats persist across server restarts.
 
 ## Run locally
 
@@ -27,6 +27,8 @@ npm start
 Open **http://localhost:3001**. One server serves the built UI, HTTP API, and WebSocket connections. `check:production` starts an isolated in-memory server and verifies the built UI without touching saved games.
 
 GitHub hosts this source repository. Playing over the internet requires running the server on a host that supports Node.js or Docker; static hosting alone cannot run the multiplayer backend.
+
+For a managed client pilot, see the [client hosting guide](docs/client-hosting.md) and the included [Render Blueprint](render.yaml). No paid service is provisioned automatically.
 
 ## Docker
 
@@ -69,6 +71,8 @@ Run **one application instance** with its persistent data volume. The JSON store
 | `OPENOPOLY_DOMAIN` | unset | Domain for the optional HTTPS setup |
 
 Docker Compose reads `.env`. Direct Node commands use process environment variables; after building, Node can read a file with `node --env-file=.env server/index.js`.
+
+The Openopoly rebrand retains existing browser storage identifiers, room IDs and pending-command identities, preserving saved seats and reconnect recovery.
 
 Guest credentials stay in each browser. Keep browser storage and the server data volume to preserve seats. A display name alone does not recover a lost guest session. The server stores token hashes rather than raw guest tokens.
 

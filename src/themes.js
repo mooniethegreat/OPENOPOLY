@@ -1,5 +1,5 @@
 export const THEMES = {
-  classic: { id: 'classic', name: 'The original', subtitle: 'CLASSIC MONOPOLY', short: 'Classic', color: '#b8d9ba' },
+  classic: { id: 'classic', name: 'The original', subtitle: 'CLASSIC OPENOPOLY', short: 'Classic', color: '#b8d9ba' },
   'inland-empire': { id: 'inland-empire', name: 'Inland Empire', subtitle: 'INLAND EMPIRE-OPOLY', short: 'Inland Empire', color: '#e7d9b4' },
 };
 

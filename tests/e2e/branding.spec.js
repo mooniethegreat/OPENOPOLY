@@ -1,0 +1,67 @@
+import { test, expect } from '@playwright/test';
+import path from 'node:path';
+import { randomUUID } from 'node:crypto';
+import { io } from 'socket.io-client';
+import { createApp } from '../../server/app.js';
+import { createGame } from '../../shared/engine.js';
+import { decisionContext } from '../../src/action-gate.js';
+
+test('Openopoly branding preserves legacy saved seats, preferences and restored balances', async ({ browser }, info) => {
+  const server = createApp({ storePath: '', distPath: path.resolve(process.env.E2E_BRAND_DIST || 'dist') });
+  const address = await server.listen(0, '127.0.0.1'), origin = `http://127.0.0.1:${address.port}`;
+  const context = await browser.newContext({ baseURL: origin, viewport: { width: 1366, height: 900 } });
+  const page = await context.newPage(), errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  let peer;
+  try {
+    await page.goto(origin);
+    await expect(page).toHaveTitle('Openopoly');
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Play Openopoly online/);
+    await expect(page.locator('.welcome-copy h1>span')).toHaveText('OPENOPOLY');
+    expect(await (await page.request.get('/favicon.svg')).text()).toContain('<title>Openopoly</title>');
+    await page.screenshot({ path: info.outputPath('openopoly-menu.png') });
+    const post = async (route, body) => { const response = await page.request.post(route, { data: body }); expect(response.status()).toBe(201); return response.json(); };
+    const host = await post('/api/rooms', { name: 'Saved host', theme: 'classic' });
+    const guest = await post(`/api/rooms/${host.room.code}/join`, { name: 'Saved guest' });
+    server.store.transaction(data => { const room = data.rooms[host.room.code]; room.game = createGame(room.players, { seed: 42, firstPlayerId: host.playerId }); room.status = 'playing'; room.version++; room.decisionVersion++; });
+    const seat = { roomCode: host.room.code, playerId: host.playerId, sessionToken: host.sessionToken, name: 'Saved host', theme: 'classic' };
+    await page.evaluate(seat => {
+      localStorage.setItem('monopoly-table-session-v1', JSON.stringify(seat));
+      localStorage.setItem('monopoly-appearance-v1', JSON.stringify({ palette: 'ocean', mode: 'dark' }));
+      localStorage.setItem('monopoly-sound-v1', JSON.stringify({ muted: true, volume: .25 }));
+    }, seat);
+    await page.goto(`${origin}/?room=${host.room.code}`);
+    await expect(page.locator('.connection')).toHaveText('CONNECTED');
+    await expect(page.getByRole('link', { name: 'Openopoly home', exact: true })).toContainText('OPENOPOLY');
+    await expect(page.locator('.scene-brand>b')).toHaveText('OPENOPOLY');
+    await expect(page.locator('.scene-viewport')).toHaveAttribute('aria-label', /Classic Openopoly/);
+    await expect(page.locator('.compact-edition option[value="classic"]')).toHaveText('Classic Openopoly');
+    await expect(page.locator('.compact-edition option[value="inland-empire"]')).toHaveText('Inland Empire-opoly');
+    await expect(page.locator('.scene-tile')).toHaveCount(40);
+    await page.screenshot({ path: info.outputPath('openopoly-restored-table.png') });
+    peer = io(origin, { auth: { roomCode: host.room.code, sessionToken: guest.sessionToken }, transports: ['websocket'], reconnection: false });
+    await new Promise((resolve, reject) => { peer.once('connect', resolve); peer.once('connect_error', reject); });
+    const state = () => server.publicRoom(server.store.data.rooms[host.room.code]);
+    const payment = await peer.timeout(5000).emitWithAck('action', { type: 'money:send', commandId: randomUUID(), ...decisionContext(state()), toPlayerId: host.playerId, amount: 5, note: 'Brand check' });
+    expect(payment.ok).toBe(true);
+    await expect(page.locator('.money-flight-note svg text').filter({ hasText: /^OPENOPOLY MONEY$/ }).first()).toHaveText('OPENOPOLY MONEY');
+    await page.reload();
+    await expect(page.locator('.connection')).toHaveText('CONNECTED');
+    await expect(page.locator('.player-hud strong').first()).toHaveText('$1,505');
+    const saved = await page.evaluate(code => ({ seat: JSON.parse(localStorage.getItem('monopoly-table-sessions-v2') || '{}')[code] || JSON.parse(localStorage.getItem('monopoly-table-session-v1')), appearance: JSON.parse(localStorage.getItem('monopoly-appearance-v1')), sound: JSON.parse(localStorage.getItem('monopoly-sound-v1')), renamed: localStorage.getItem('openopoly-table-sessions-v2') }), host.room.code);
+    expect(saved.seat.playerId).toBe(host.playerId); expect(saved.seat.sessionToken).toBe(host.sessionToken); expect(saved.renamed).toBeNull();
+    expect(saved.appearance).toEqual({ palette: 'ocean', mode: 'dark' }); expect(saved.sound).toEqual({ muted: true, volume: .25 });
+    // Exercise the separately deployed multi-room format, without asking the product to migrate v1.
+    await page.evaluate(seat => { localStorage.setItem('monopoly-table-sessions-v2', JSON.stringify({ [seat.roomCode]: seat })); localStorage.setItem('monopoly-table-active-v2', seat.roomCode); localStorage.removeItem('monopoly-table-session-v1'); }, seat);
+    await page.reload();
+    await expect(page.locator('.connection')).toHaveText('CONNECTED');
+    await expect(page.locator('.player-hud strong').first()).toHaveText('$1,505');
+    const currentSeat = await page.evaluate(code => JSON.parse(localStorage.getItem('monopoly-table-sessions-v2'))[code], host.room.code);
+    expect(currentSeat.playerId).toBe(host.playerId); expect(currentSeat.sessionToken).toBe(host.sessionToken);
+    expect(state().game.players.find(player => player.id === host.playerId).cash).toBe(1505);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.locator('.wordmark .brand-m')).toHaveText('O');
+    await page.screenshot({ path: info.outputPath('openopoly-phone.png') });
+    expect(errors).toEqual([]);
+  } finally { peer?.disconnect(); await context.close(); await server.close(); }
+});

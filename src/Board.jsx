@@ -142,7 +142,7 @@ const MiniatureCity = memo(function MiniatureCity({ inland }) {
     </span>)}
     {TREES.map(([x, y], i) => <span key={i} className="miniature-tree" style={{ left: x, top: y, '--tree-size': `${24 + i % 3 * 5}px` }}><i /><i /><i /></span>)}
     <span className="miniature-car car-one" /><span className="miniature-car car-two" />
-    <div className="miniature-plaza"><Landmark /><span>{inland ? 'INLAND EMPIRE' : 'MONOPOLY CITY'}</span></div>
+    <div className="miniature-plaza"><Landmark /><span>{inland ? 'INLAND EMPIRE' : 'OPENOPOLY CITY'}</span></div>
   </div>;
 });
 
@@ -420,10 +420,10 @@ export function Board({ preview = false }) {
   return <div className={`board-scene ${preview ? 'scene-preview' : ''} ${inland ? 'scene-inland' : 'scene-classic'} ${presentation.moving ? 'scene-in-motion' : ''} ${flat ? 'scene-flat' : ''} ${manipulating ? 'scene-manipulating' : ''} ${rotationMode ? 'scene-rotate-mode' : ''}`} data-presentation-id={presentation.active ? presentation.presentation?.id : ''} data-presentation-stage={presentation.stage} data-presentation-elapsed={presentation.elapsed} data-server-time={presentation.serverTime} data-clock-offset={presentation.clockOffset} data-camera-mode={follow ? 'follow' : 'free'} data-camera-heading={boardHeading(camera.yaw)} data-camera-zoom={camera.zoom} data-camera-yaw={camera.yaw} data-camera-x={camera.x} data-camera-y={camera.y}>
     <svg width="0" height="0" className="scene-filter-defs" aria-hidden="true"><defs><filter id="monopoly-metal-cutout" colorInterpolationFilters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 2.88" result="keyed" /><feComposite in="keyed" in2="SourceGraphic" operator="in" /></filter></defs></svg>
     <div className="scene-ambient" aria-hidden="true" />
-    <div className="scene-viewport" ref={viewportRef} style={{ perspectiveOrigin: `${framing.left + framing.width / 2}px ${framing.top + framing.height / 2}px` }} data-safe-left={framing.left} data-safe-top={framing.top} data-safe-width={framing.width} data-safe-height={framing.height} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={clearGesture} onLostPointerCapture={pointerUp} onContextMenu={contextMenu} aria-label={`${inland ? 'Inland Empire-opoly' : 'Classic Monopoly'} board. Drag to ${rotationMode ? 'rotate' : 'pan'}; hold both mouse buttons to rotate; scroll or pinch to zoom.`}>
+    <div className="scene-viewport" ref={viewportRef} style={{ perspectiveOrigin: `${framing.left + framing.width / 2}px ${framing.top + framing.height / 2}px` }} data-safe-left={framing.left} data-safe-top={framing.top} data-safe-width={framing.width} data-safe-height={framing.height} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={clearGesture} onLostPointerCapture={pointerUp} onContextMenu={contextMenu} aria-label={`${inland ? 'Inland Empire-opoly' : 'Classic Openopoly'} board. Drag to ${rotationMode ? 'rotate' : 'pan'}; hold both mouse buttons to rotate; scroll or pinch to zoom.`}>
       <div className="scene-camera" style={{ left: framing.left + framing.width / 2, top: framing.top + framing.height / 2, transform: `translate3d(${cameraX}px, ${cameraY}px, 0) scale(${scale})`, '--scene-tilt': `${tilt}deg`, '--scene-untilt': `${-tilt}deg`, '--scene-unyaw': `${-camera.yaw}deg`, '--label-compensate-x': `${labelLift.x}px`, '--label-compensate-y': `${labelLift.y}px` }}>
         <div className="scene-world" style={{ transform: `rotateX(${tilt}deg) rotateZ(${camera.yaw}deg)` }}>
-          <div className="scene-platform" aria-hidden="true"><span className="platform-front" /><span className="platform-side" /><span className="platform-label">{inland ? 'INLAND EMPIRE-OPOLY' : 'MONOPOLY'}</span></div>
+          <div className="scene-platform" aria-hidden="true"><span className="platform-front" /><span className="platform-side" /><span className="platform-label">{inland ? 'INLAND EMPIRE-OPOLY' : 'OPENOPOLY'}</span></div>
           <div className="scene-board monopoly-board" role="group" aria-label="40 board spaces">
             <div className="scene-center"><div className="center-lawn" /><div className="center-boundary" /></div>
             {board.map(space => {
@@ -447,7 +447,7 @@ export function Board({ preview = false }) {
             })}
           </div>
           <MiniatureCity inland={inland} />
-          <div className={`scene-brand ${inland ? 'brand-inland' : ''}`} aria-hidden="true">{inland ? <><span>INLAND EMPIRE</span><b>OPOLY</b></> : <b>MONOPOLY<span>®</span></b>}</div>
+          <div className={`scene-brand ${inland ? 'brand-inland' : ''}`} aria-hidden="true">{inland ? <><span>INLAND EMPIRE</span><b>OPOLY</b></> : <b>OPENOPOLY</b>}</div>
           <div className="scene-card-deck scene-chest" aria-hidden="true"><Box /><b>{inland ? 'BIG FUN' : 'COMMUNITY CHEST'}</b><span>DRAW A CARD</span></div>
           <div className="scene-card-deck scene-chance" aria-hidden="true"><b className="deck-question">?</b><b>{inland ? 'CONTINGENCY' : 'CHANCE'}</b><span>DRAW A CARD</span></div>
           {board.filter(space => game?.properties?.[space.id]?.houses > 0).map(space => {
@@ -473,7 +473,7 @@ export function Board({ preview = false }) {
       </div>
     </div>
     {!preview && <>
-      <div className="scene-location"><span className="scene-location-color" style={{ background: focusSpace?.color || current?.color || 'var(--ui-accent)' }} /><div><small>{presentation.rolling ? 'DICE IN PLAY' : presentation.moving ? 'MOVING TO' : current ? `${current.name.toUpperCase()} · SPACE ${focusPosition < 0 ? 'CENTER' : focusPosition}` : 'THE BOARD'}</small><button type="button" onClick={() => focusSpace && inspect(focusSpace.id)} disabled={!focusSpace || presentation.rolling}>{presentation.rolling ? 'Rolling dice…' : focusSpace ? spaceName(focusSpace, inland ? 'inland-empire' : 'classic') : inland ? 'Inland Empire-opoly' : 'Classic Monopoly'}</button></div>{focusSpace?.price && !presentation.rolling ? <span className="scene-location-price">{money(focusSpace.price)}</span> : null}</div>
+      <div className="scene-location"><span className="scene-location-color" style={{ background: focusSpace?.color || current?.color || 'var(--ui-accent)' }} /><div><small>{presentation.rolling ? 'DICE IN PLAY' : presentation.moving ? 'MOVING TO' : current ? `${current.name.toUpperCase()} · SPACE ${focusPosition < 0 ? 'CENTER' : focusPosition}` : 'THE BOARD'}</small><button type="button" onClick={() => focusSpace && inspect(focusSpace.id)} disabled={!focusSpace || presentation.rolling}>{presentation.rolling ? 'Rolling dice…' : focusSpace ? spaceName(focusSpace, inland ? 'inland-empire' : 'classic') : inland ? 'Inland Empire-opoly' : 'Classic Openopoly'}</button></div>{focusSpace?.price && !presentation.rolling ? <span className="scene-location-price">{money(focusSpace.price)}</span> : null}</div>
       <div className="scene-bank-stock"><span><House size={13} />{game?.bank?.houses ?? 32}</span><span><Landmark size={13} />{game?.bank?.hotels ?? 12}</span>{inland && <span className="scene-pot">POT <b>{money(game?.centerPot || 0)}</b></span>}</div>
       <div className="scene-camera-bar" role="toolbar" aria-label="Board camera">
         <div className="scene-zoom-controls"><button type="button" title="Zoom out" aria-label="Zoom out" onClick={() => updateCamera(value => ({ ...value, zoom: clamp(value.zoom - 0.2, 0.8, 3.2) }))} disabled={camera.zoom <= 0.8}><Minus size={17} /></button><span>{Math.round(camera.zoom * 100)}%</span><button type="button" title="Zoom in" aria-label="Zoom in" onClick={() => updateCamera(value => ({ ...value, zoom: clamp(value.zoom + 0.2, 0.8, 3.2) }))} disabled={camera.zoom >= 3.2}><Plus size={17} /></button></div>

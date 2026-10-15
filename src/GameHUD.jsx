@@ -55,7 +55,7 @@ export function TurnStrip() {
   const next = nextTurnPlayer(game);
   const extraRoll = game?.doubles > 0 && !current?.inJail && ['roll', 'buy'].includes(game?.phase);
   const instruction = game?.status === 'finished' ? 'Game complete' : presentation.active ? presentation.rolling ? 'Rolling the dice…' : 'Moving around the board…' : extraRoll ? 'Doubles · another roll this turn' : current?.inJail ? game.edition === 'inland' ? 'Traffic Jam' : 'In jail' : '';
-  if (!game) return <div className="turn-strip lobby-strip"><span className="turn-number">LOBBY</span><div><strong>{room.theme === 'inland-empire' ? 'Inland Empire-opoly' : 'Classic Monopoly'}</strong><span>Choose a token, invite players, then start.</span></div><span className="turn-next">{players.length} players ready</span></div>;
+  if (!game) return <div className="turn-strip lobby-strip"><span className="turn-number">LOBBY</span><div><strong>{room.theme === 'inland-empire' ? 'Inland Empire-opoly' : 'Classic Openopoly'}</strong><span>Choose a token, invite players, then start.</span></div><span className="turn-next">{players.length} players ready</span></div>;
   return <div className={`turn-strip ${currentId === playerId ? 'your-turn' : ''}`} data-testid="turn-strip" aria-live="polite">
     <span className="turn-number">TURN<strong>{game.turn}</strong></span>
     <div className="turn-current" key={currentId}><span className="turn-color" style={{ background: current?.color }} /><div><strong>{currentId === playerId ? 'Your turn' : `${current?.name}’s turn`}</strong>{instruction && <span>{instruction}</span>}</div></div>
