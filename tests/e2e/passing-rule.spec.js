@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { showCameraControls } from './ui-helpers.js';
+import { chooseOpenopoly, showCameraControls } from './ui-helpers.js';
 
 const baseURL = process.env.E2E_BASE_URL || 'http://127.0.0.1:3199';
 const ruleName = 'Allow passing on unowned properties';
@@ -16,6 +16,7 @@ test('a host configures passing before play and two clients see a bank-held deed
   for (const page of [pageA, pageB]) page.on('pageerror', error => errors.push(error.message));
   try {
     await pageA.goto('/');
+    await chooseOpenopoly(pageA);
     await pageA.getByRole('button', { name: 'Create room', exact: true }).click();
     const initialRule = pageA.getByRole('checkbox', { name: ruleName, exact: true });
     await expect(initialRule).not.toBeChecked(); await initialRule.check();

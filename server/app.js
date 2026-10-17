@@ -5,6 +5,8 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { Server as SocketServer } from 'socket.io';
 import { createGame, applyAction, publicGame } from '../shared/engine.js';
+import { createUnoGame, applyUnoAction, applyUnoTimeout, publicUnoGame } from '../shared/uno-engine.js';
+import { normalizeUnoRules } from '../shared/uno-cards.js';
 import { TOKENS as BOARD_TOKENS, PLAYER_COLORS } from '../shared/board.js';
 import { createPresentation, isPresentationActive, PRESENTATION_TIMING } from '../shared/presentation.js';
 import { RoomStore } from './store.js';
@@ -23,6 +25,15 @@ const THEMES = ['classic', 'inland-empire'];
 const DEFAULT_APPEARANCE = { palette: 'graphite', mode: 'dark' };
 const hashToken = token => createHash('sha256').update(token).digest('hex');
 const timestamp = () => new Date().toISOString();
+const gameTypeOf = room => room.gameType ?? 'monopoly';
+const maximumPlayers = room => gameTypeOf(room) === 'uno' ? 10 : room.theme === 'inland-empire' ? 6 : 8;
+const automaticActionType = (room, timer) => gameTypeOf(room) === 'uno' ? (timer.phase === 'play' ? 'uno:draw' : 'uno:pass') : (timer.phase === 'roll' ? 'roll' : 'endTurn');
+const publicFields = (value, fields) => Object.fromEntries(fields.map(key => [key, structuredClone(value[key])]));
+
+function normalizeGameType(value = 'monopoly') {
+  assert(['monopoly', 'uno'].includes(value), 'Choose Openopoly or OpenUno');
+  return value;
+}
 
 function normalizeAppearance(value = DEFAULT_APPEARANCE) {
   assert(value && typeof value === 'object' && !Array.isArray(value), 'Appearance must contain a palette and mode');
@@ -34,7 +45,8 @@ function normalizeAppearance(value = DEFAULT_APPEARANCE) {
   return { palette, mode };
 }
 
-function normalizeRoomRules(value = {}) {
+function normalizeRoomRules(value = {}, gameType = 'monopoly') {
+  if (gameType === 'uno') return normalizeUnoRules(value);
   assert(value && typeof value === 'object' && !Array.isArray(value), 'Room rules must be an object');
   assert(Object.keys(value).every(key => key === 'allowPassingUnowned'), 'Unknown room rule');
   const allowPassingUnowned = value.allowPassingUnowned === undefined ? false : value.allowPassingUnowned;
@@ -49,6 +61,7 @@ function addActivity(room, type, playerId, message) {
 
 function selectToken(room, requested, strict = false, playerId = null) {
   if (requested !== undefined) assert(TOKENS.includes(requested), 'Choose a valid playing piece');
+  if (gameTypeOf(room) === 'uno') return requested ?? TOKENS[room.players.length % TOKENS.length];
   const used = room.players.filter(p => p.id !== playerId).map(p => p.token);
   if (requested && !used.includes(requested)) return requested;
   assert(!strict, 'That playing piece is already taken');
@@ -58,7 +71,7 @@ function selectToken(room, requested, strict = false, playerId = null) {
 function newPlayer(room, input) {
   const name = text(input.name, 'Display name', 1, 24);
   assert(!room.players.some(p => p.name.toLocaleLowerCase() === name.toLocaleLowerCase()), 'That display name is already in this room');
-  return { id: randomUUID(), name, token: selectToken(room, input.token), color: COLORS.find(color => !room.players.some(p => p.color === color)), joinedAt: timestamp() };
+  return { id: randomUUID(), name, token: selectToken(room, input.token), color: gameTypeOf(room) === 'uno' ? COLORS[room.players.length % COLORS.length] : COLORS.find(color => !room.players.some(p => p.color === color)), joinedAt: timestamp() };
 }
 
 function randomCode(rooms) {
@@ -126,26 +139,44 @@ export function createApp(options = {}) {
     return session;
   }
 
-  function publicRoom(room) {
+  function publicRoom(room, viewerId = null) {
     const serverNow = Date.now();
-    const result = structuredClone(room);
+    const isUno = gameTypeOf(room) === 'uno';
+    const result = isUno
+      ? structuredClone(Object.fromEntries(['code', 'version', 'decisionVersion', 'hostId', 'gameType', 'theme', 'appearance', 'rules', 'status', 'players', 'turnTimer', 'chat', 'votes', 'activity', 'createdAt', 'updatedAt'].map(key => [key, room[key]])))
+      : structuredClone(room);
     delete result._commandReceipts;
+    result.gameType = gameTypeOf(room);
     result.actionProtocol = ACTION_PROTOCOL;
     result.decisionVersion = room.decisionVersion ?? 0;
     result.version = room.version ?? 0;
     result.serverNow = serverNow;
     result.chat ??= [];
-    result.presentation = isPresentationActive(room.presentation, serverNow) ? structuredClone(room.presentation) : null;
+    result.presentation = !isUno && isPresentationActive(room.presentation, serverNow) ? structuredClone(room.presentation) : null;
     result.turnTimer = timedTurnContext(room, { at: serverNow, connectedActive: connectedActive(room) }) && room.turnTimer ? structuredClone(room.turnTimer) : null;
     result.appearance = normalizeAppearance(room.appearance);
-    result.rules = normalizeRoomRules(room.rules);
-    result.players = result.players.map(player => ({ ...player, connected: (presence.get(`${room.code}:${player.id}`)?.size ?? 0) > 0 }));
-    result.game = room.game ? publicGame(room.game) : null;
+    result.rules = normalizeRoomRules(room.rules, result.gameType);
+    result.players = result.players.map(player => ({ ...(result.gameType === 'uno' ? { id: player.id, name: player.name, token: player.token, color: player.color, joinedAt: player.joinedAt } : player), connected: (presence.get(`${room.code}:${player.id}`)?.size ?? 0) > 0 }));
+    if (isUno) {
+      result.contracts = [];
+      if (result.turnTimer) result.turnTimer = publicFields(result.turnTimer, ['id', 'playerId', 'turn', 'phase', 'startedAt', 'endsAt', 'decisionVersion']);
+      result.chat = result.chat.map(item => publicFields(item, ['id', 'playerId', 'text', 'at']));
+      result.activity = (result.activity ?? []).map(item => publicFields(item, ['id', 'type', 'playerId', 'message', 'at']));
+      result.votes = (result.votes ?? []).map(item => publicFields(item, ['id', 'proposerId', 'title', 'details', 'rule', 'eligibleIds', 'ballots', 'status', 'threshold', 'createdAt', 'expiresAt', 'closedAt']));
+    }
+    result.game = room.game ? result.gameType === 'uno' ? publicUnoGame(room.game, viewerId, { hostId: room.hostId }) : publicGame(room.game) : null;
     return result;
   }
 
   function publish(code) {
-    if (store.data.rooms[code]) io.to(code).emit('room:state', publicRoom(store.data.rooms[code]));
+    const room = store.data.rooms[code];
+    if (!room) return;
+    if (gameTypeOf(room) !== 'uno') { io.to(code).emit('room:state', publicRoom(room)); return; }
+    // UNO room broadcasts are individualized. Never broadcast a full private game
+    // and rely on the client to conceal opponents' hands.
+    for (const socket of io.sockets.sockets.values()) {
+      if (socket.data.roomCode === code) socket.emit('room:state', publicRoom(room, socket.data.playerId));
+    }
   }
 
   function scheduleDeadlines(retryAfter = 0) {
@@ -155,7 +186,7 @@ export function createApp(options = {}) {
     let next = Infinity;
     for (const room of Object.values(store.data.rooms)) {
       if (Number.isFinite(room.presentation?.endsAt)) next = Math.min(next, room.presentation.endsAt);
-      const paymentAt = nextScheduledPaymentAt(room);
+      const paymentAt = gameTypeOf(room) === 'uno' ? Infinity : nextScheduledPaymentAt(room);
       if (Number.isFinite(paymentAt)) next = Math.min(next, isPresentationActive(room.presentation, currentTime) ? Math.max(paymentAt, room.presentation.endsAt) : paymentAt);
       if (timedTurnContext(room, { at: currentTime, connectedActive: connectedActive(room) }) && Number.isFinite(room.turnTimer?.endsAt)) next = Math.min(next, room.turnTimer.endsAt);
     }
@@ -174,13 +205,13 @@ export function createApp(options = {}) {
     const currentTime = Date.now();
     const codes = Object.values(store.data.rooms).filter(room =>
       (room.presentation && room.presentation.endsAt <= currentTime) ||
-      (!isPresentationActive(room.presentation, currentTime) && nextScheduledPaymentAt(room) <= currentTime)
+      (gameTypeOf(room) !== 'uno' && !isPresentationActive(room.presentation, currentTime) && nextScheduledPaymentAt(room) <= currentTime)
     ).map(room => room.code);
     if (codes.length) store.transaction(data => {
       for (const code of codes) {
         const room = data.rooms[code];
         if (room.presentation?.endsAt <= currentTime) room.presentation = null;
-        if (processScheduledPayments(room, currentTime)) room.decisionVersion = (room.decisionVersion ?? 0) + 1;
+        if (gameTypeOf(room) !== 'uno' && processScheduledPayments(room, currentTime)) room.decisionVersion = (room.decisionVersion ?? 0) + 1;
         reconcileClock(room, { at: currentTime });
         touch(room);
       }
@@ -192,7 +223,7 @@ export function createApp(options = {}) {
       const room = store.data.rooms[code];
       if (!isTurnTimerDue(room, { at: Date.now(), connectedActive: connectedActive(room) })) continue;
       const timer = room.turnTimer;
-      execute(code, timer.playerId, { commandId: `timer-${timer.id}`, ...decisionContext(room), type: timer.phase === 'roll' ? 'roll' : 'endTurn' }, { skipDeadlineFlush: true, automaticTimerId: timer.id });
+      execute(code, timer.playerId, { commandId: `timer-${timer.id}`, ...decisionContext(room), type: automaticActionType(room, timer) }, { skipDeadlineFlush: true, automaticTimerId: timer.id });
       automatic = true; publish(code);
     }
     if (codes.length || automatic) scheduleDeadlines();
@@ -221,7 +252,7 @@ export function createApp(options = {}) {
       if (automaticTimerId) {
         assert(room.turnTimer?.id === automaticTimerId && room.turnTimer.playerId === actorId &&
           isTurnTimerDue(room, { connectedActive: connectedActive(room) }) &&
-          input.type === (room.turnTimer.phase === 'roll' ? 'roll' : 'endTurn'), 'The turn timer changed before its automatic action');
+          input.type === automaticActionType(room, room.turnTimer), 'The turn timer changed before its automatic action');
       }
       validateDecisionContext(room, command);
       const previousSeq = Math.max(0, ...(room.game?.log ?? []).map(e => e.seq ?? 0));
@@ -241,12 +272,14 @@ export function createApp(options = {}) {
           assert(room.hostId === actorId, 'Only the host can do that');
           if (action.type === 'room:start') {
             assert(room.status === 'lobby', 'This game has already started');
-            assert(room.players.length >= 2 && room.players.length <= 8, 'A game requires 2 to 8 players');
-            assert(room.players.length <= (room.theme === 'inland-empire' ? 6 : 8), 'Inland Empire-Opoly supports at most 6 players');
-            room.game = createGame(room.players.map(p => ({ id: p.id, name: p.name, token: p.token, color: p.color })), { edition: room.theme, allowPassingUnowned: room.rules?.allowPassingUnowned === true });
+            assert(room.players.length >= 2 && room.players.length <= maximumPlayers(room), `This game requires 2 to ${maximumPlayers(room)} players`);
+            room.game = gameTypeOf(room) === 'uno'
+              ? createUnoGame(room.players, { rules: normalizeUnoRules(room.rules) })
+              : createGame(room.players.map(p => ({ id: p.id, name: p.name, token: p.token, color: p.color })), { edition: room.theme, allowPassingUnowned: room.rules?.allowPassingUnowned === true });
             room.status = 'playing';
             addActivity(room, 'start', actorId, `${actor.name} started the game`);
           } else if (action.type === 'room:theme') {
+            assert(gameTypeOf(room) !== 'uno', 'Choose the UNO deck with room rules');
             assert(room.status === 'lobby', 'The edition and its rules are locked after the game starts');
             assert(THEMES.includes(action.theme), 'Unknown board theme');
             assert(action.theme !== 'inland-empire' || room.players.length <= 6, 'Inland Empire-Opoly supports at most 6 players');
@@ -254,8 +287,8 @@ export function createApp(options = {}) {
             addActivity(room, 'theme', actorId, `${actor.name} changed the shared board theme`);
           } else if (action.type === 'room:rules') {
             assert(room.status === 'lobby', 'Room rules are locked after the game starts');
-            room.rules = normalizeRoomRules(action.rules);
-            addActivity(room, 'rules', actorId, `${actor.name} ${room.rules.allowPassingUnowned ? 'enabled' : 'disabled'} passing on unowned properties`);
+            room.rules = normalizeRoomRules(action.rules, gameTypeOf(room));
+            addActivity(room, 'rules', actorId, gameTypeOf(room) === 'uno' ? `${actor.name} chose ${room.rules.edition === 'stitch' ? 'Lilo & Stitch' : 'Classic'} UNO and ${room.rules.scoreMode === 'points' ? 'a 500-point match' : 'a single round'}` : `${actor.name} ${room.rules.allowPassingUnowned ? 'enabled' : 'disabled'} passing on unowned properties`);
           } else if (action.type === 'room:appearance') {
             room.appearance = normalizeAppearance(action.appearance);
             addActivity(room, 'appearance', actorId, `${actor.name} set ${room.appearance.palette} colors and ${room.appearance.mode} mode`);
@@ -268,8 +301,10 @@ export function createApp(options = {}) {
       } else if (action.type === 'chat:send') {
         sendChat(room, actorId, action);
       } else if (action.type === 'money:send') {
+        assert(gameTypeOf(room) !== 'uno', 'Money transfers are available only in Openopoly');
         sendMoney(room, actorId, action);
       } else if (action.type.startsWith('contract:')) {
+        assert(gameTypeOf(room) !== 'uno', 'Contracts are available only in Openopoly');
         handleContract(room, actorId, action);
         addActivity(room, 'contract', actorId, `${actor.name}: ${action.type.slice(9).replaceAll('-', ' ')} contract`);
       } else if (action.type.startsWith('vote:')) {
@@ -277,18 +312,26 @@ export function createApp(options = {}) {
         addActivity(room, 'vote', actorId, `${actor.name}: ${action.type.slice(5)} vote`);
       } else {
         assert(room.status === 'playing' && room.game, 'Start the game first');
-        applyAction(room.game, actorId, action);
+        if (gameTypeOf(room) === 'uno') {
+          assert(action.type.startsWith('uno:'), 'That action belongs to Openopoly');
+          if (action.type === 'uno:next-round') assert(room.hostId === actorId, 'Only the host can start the next round');
+          if (automaticTimerId) applyUnoTimeout(room.game, actorId);
+          else applyUnoAction(room.game, actorId, action);
+        } else {
+          assert(!action.type.startsWith('uno:'), 'That action belongs to OpenUno');
+          applyAction(room.game, actorId, action);
+        }
       }
       const events = (room.game?.log ?? []).filter(e => e.seq > previousSeq);
-      processContractEvents(room, events);
+      if (gameTypeOf(room) !== 'uno') processContractEvents(room, events);
       const outcomeEvents = (room.game?.log ?? []).filter(e => e.seq > previousSeq);
-      const presentation = createPresentation(outcomeEvents, { id: randomUUID(), timing: presentationTiming });
+      const presentation = gameTypeOf(room) === 'uno' ? null : createPresentation(outcomeEvents, { id: randomUUID(), timing: presentationTiming });
       if (presentation) room.presentation = presentation;
       if (room.game?.status === 'finished') room.status = 'finished';
       if ((room.game?._eventSeq ?? 0) !== previousSeq) room.decisionVersion = (room.decisionVersion ?? 0) + 1;
       const substantive = !['room:', 'chat:', 'vote:'].some(prefix => action.type.startsWith(prefix));
       reconcileClock(room, { restartEnd: substantive && actorId === room.game?.currentPlayerId, forceRestart: action.type === 'roll' });
-      if (automaticTimerId) addActivity(room, action.type === 'roll' ? 'auto-roll' : 'auto-end', actorId, `${actor.name} ${action.type === 'roll' ? 'rolled automatically' : 'ended the turn automatically'} after the 30-second timer expired`);
+      if (automaticTimerId) addActivity(room, gameTypeOf(room) === 'uno' ? 'auto-uno' : action.type === 'roll' ? 'auto-roll' : 'auto-end', actorId, gameTypeOf(room) === 'uno' ? `${actor.name} ${action.type === 'uno:draw' ? 'drew and passed' : 'passed'} automatically after the turn timer expired` : `${actor.name} ${action.type === 'roll' ? 'rolled automatically' : 'ended the turn automatically'} after the 30-second timer expired`);
       touch(room);
       return { duplicate: false, receipt: rememberCommand(room, actorId, command) };
     });
@@ -310,14 +353,16 @@ export function createApp(options = {}) {
 
   app.post('/api/rooms', (request, response, next) => {
     try {
+      const gameType = normalizeGameType(request.body.gameType);
       const theme = request.body.theme ?? 'classic';
       assert(THEMES.includes(theme), 'Unknown board theme');
+      assert(gameType !== 'uno' || theme === 'classic', 'Choose the UNO deck with room rules');
       const appearance = normalizeAppearance(request.body.appearance);
-      const rules = normalizeRoomRules(request.body.rules);
+      const rules = normalizeRoomRules(request.body.rules, gameType);
       const sessionToken = randomBytes(32).toString('base64url');
       const created = store.transaction(data => {
         const code = randomCode(data.rooms);
-        const room = { code, version: 1, decisionVersion: 0, hostId: null, theme, appearance, rules, status: 'lobby', players: [], game: null, presentation: null, turnTimer: null, chat: [], contracts: [], votes: [], activity: [], createdAt: timestamp(), updatedAt: timestamp() };
+        const room = { code, version: 1, decisionVersion: 0, hostId: null, gameType, theme, appearance, rules, status: 'lobby', players: [], game: null, presentation: null, turnTimer: null, chat: [], contracts: [], votes: [], activity: [], createdAt: timestamp(), updatedAt: timestamp() };
         const player = newPlayer(room, request.body);
         room.players.push(player);
         room.hostId = player.id;
@@ -326,7 +371,7 @@ export function createApp(options = {}) {
         data.sessions[hashToken(sessionToken)] = { playerId: player.id, roomCode: code, createdAt: timestamp() };
         return { room, playerId: player.id };
       });
-      response.status(201).json({ room: publicRoom(created.room), playerId: created.playerId, sessionToken });
+      response.status(201).json({ room: publicRoom(created.room, created.playerId), playerId: created.playerId, sessionToken });
     } catch (error) { next(error); }
   });
 
@@ -336,14 +381,14 @@ export function createApp(options = {}) {
       assert(store.data.rooms[code], 'Room not found. Check the six-character room code');
       if (request.body.sessionToken) {
         const session = authenticate(request.body.sessionToken, code);
-        response.json({ room: publicRoom(store.data.rooms[code]), playerId: session.playerId, sessionToken: request.body.sessionToken });
+        response.json({ room: publicRoom(store.data.rooms[code], session.playerId), playerId: session.playerId, sessionToken: request.body.sessionToken });
         return;
       }
       const sessionToken = randomBytes(32).toString('base64url');
       const joined = store.transaction(data => {
         const room = data.rooms[code];
         assert(room.status === 'lobby', 'This game has started. Rejoin with your original guest session');
-        assert(room.players.length < (room.theme === 'inland-empire' ? 6 : 8), 'This room is full');
+        assert(room.players.length < maximumPlayers(room), 'This room is full');
         const player = newPlayer(room, request.body);
         room.players.push(player);
         addActivity(room, 'joined', player.id, `${player.name} joined the room`);
@@ -352,7 +397,15 @@ export function createApp(options = {}) {
         return { room, playerId: player.id };
       });
       publish(code);
-      response.status(201).json({ room: publicRoom(joined.room), playerId: joined.playerId, sessionToken });
+      response.status(201).json({ room: publicRoom(joined.room, joined.playerId), playerId: joined.playerId, sessionToken });
+    } catch (error) { next(error); }
+  });
+
+  app.get('/api/rooms/:code/preview', (request, response, next) => {
+    try {
+      const room = store.data.rooms[request.params.code.toUpperCase()];
+      assert(room, 'Room not found. Check the six-character room code');
+      response.json({ gameType: gameTypeOf(room), status: room.status, theme: room.theme, rules: normalizeRoomRules(room.rules, gameTypeOf(room)), playerCount: room.players.length });
     } catch (error) { next(error); }
   });
 
@@ -361,7 +414,7 @@ export function createApp(options = {}) {
       const code = request.params.code.toUpperCase();
       const token = request.get('Authorization')?.replace(/^Bearer\s+/i, '');
       const session = authenticate(token, code);
-      response.json({ room: publicRoom(store.data.rooms[code]), playerId: session.playerId });
+      response.json({ room: publicRoom(store.data.rooms[code], session.playerId), playerId: session.playerId });
     } catch (error) { next(error); }
   });
 
@@ -373,7 +426,7 @@ export function createApp(options = {}) {
       const token = request.get('Authorization')?.replace(/^Bearer\s+/i, '');
       const session = authenticate(token, code);
       const room = store.data.rooms[code];
-      response.json({ ...commandOutcome(room, session.playerId, request.params.commandId), room: publicRoom(room) });
+      response.json({ ...commandOutcome(room, session.playerId, request.params.commandId), room: publicRoom(room, session.playerId) });
     } catch (error) { next(error); }
   });
 
@@ -420,12 +473,12 @@ export function createApp(options = {}) {
         if (action?.type === 'chat:send') rateLimit(`chat:${key}`, 8, 10000);
         const result = execute(roomCode, session.playerId, action);
         if (!result.duplicate) { scheduleDeadlines(); publish(roomCode); }
-        reply({ ok: true, duplicate: result.duplicate, commandId: result.receipt.commandId, appliedVersion: result.receipt.appliedVersion, appliedDecisionVersion: result.receipt.appliedDecisionVersion, room: publicRoom(store.data.rooms[roomCode]) });
+        reply({ ok: true, duplicate: result.duplicate, commandId: result.receipt.commandId, appliedVersion: result.receipt.appliedVersion, appliedDecisionVersion: result.receipt.appliedDecisionVersion, room: publicRoom(store.data.rooms[roomCode], session.playerId) });
       } catch (error) {
         reply({
           ok: false, error: error.message || 'The action could not be completed', errorCode: error.code || 'INVALID_ACTION',
           commandId: typeof action?.commandId === 'string' ? action.commandId.slice(0, 100) : null,
-          ...(authenticated && store.data.rooms[roomCode] ? { room: publicRoom(store.data.rooms[roomCode]) } : {}),
+          ...(authenticated && store.data.rooms[roomCode] ? { room: publicRoom(store.data.rooms[roomCode], socket.data.playerId) } : {}),
         });
       }
     });

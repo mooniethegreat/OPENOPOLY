@@ -28,7 +28,7 @@ function normalize(room, actorId, input) {
     fail(typeof target.playerId === 'string' && target.playerId.length <= 100 && room.players.some(player => player.id === target.playerId), 'Choose a player at this table');
     return { kind: input.kind, target: { kind: 'player', playerId: target.playerId } };
   }
-  fail(target.kind === 'property' && Number.isSafeInteger(target.propertyId) && getBoard(room.game || room.theme).some(space => space.id === target.propertyId), 'Choose a space on this board');
+  fail(room.gameType !== 'uno' && target.kind === 'property' && Number.isSafeInteger(target.propertyId) && getBoard(room.game || room.theme).some(space => space.id === target.propertyId), room.gameType === 'uno' ? 'Choose the table or a player for an OpenUno reaction' : 'Choose a space on this board');
   return { kind: input.kind, target: { kind: 'property', propertyId: target.propertyId } };
 }
 

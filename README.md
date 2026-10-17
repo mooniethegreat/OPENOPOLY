@@ -1,6 +1,6 @@
 # OPENOPOLY
 
-Openopoly is a multiplayer property trading game with a shared 3D board, synchronized dice and movement, contracts, chat, votes, reactions, and sound effects. React and Vite provide the UI; Express and Socket.IO run the authoritative game server. Rooms and guest seats persist across server restarts.
+Openopoly combines multiplayer property trading and **OpenUno** in one app. Choose a game at the shared entry screen: Openopoly has a 3D board, synchronized dice and movement, contracts, chat, votes, and reactions; OpenUno offers Classic and Disney Lilo & Stitch with Wild Ohana. React and Vite provide the UI; Express and Socket.IO run the authoritative game server. Rooms and guest seats persist across server restarts.
 
 ## Run locally
 
@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open **http://localhost:5173**. Create a room and share its invitation link. Use another browser or private window for another player. A game needs at least two players; Classic supports eight and Inland Empire-opoly supports six.
+Open **http://localhost:5173**. Choose Openopoly or OpenUno, create a room, and share its invitation link. Use another browser or private window for another player. A game needs at least two players. Openopoly Classic supports eight and Inland Empire-opoly supports six; both OpenUno editions support **2–10 players**.
 
 For LAN play, open the host computer's LAN address instead of localhost before copying the invitation. The development UI uses port 5173 and proxies the game server on port 3001.
 
@@ -78,6 +78,9 @@ Guest credentials stay in each browser. Keep browser storage and the server data
 
 ## Gameplay
 
+- OpenUno: Classic's 108 cards or Lilo & Stitch's 112 cards, including Wild Ohana; choose a 500-point match or a single round.
+- Private UNO hands, drawn-card decisions, Wild Draw Four challenges, UNO calls and catches, synchronized turns, and saved seats for reconnecting.
+- Stitch's Ohana brings every hand to four through private discard choices and draws. Edition rules, digital interpretations, and artwork limits are recorded in [UNO research](docs/uno-research.md).
 - Authoritative turns, doubles, jail, purchases, auctions, rent, mortgages, even building, finite building supply, debt, and bankruptcy.
 - Shared roll and movement timelines, reconnect recovery, and 30-second automatic roll/end deadlines that pause for required decisions.
 - Optional lobby rule to pass on an unowned property without an auction; rules lock when play starts.
@@ -110,6 +113,6 @@ The default browser suite builds and starts an isolated server on port 3199. `E2
 
 `shared/` contains the board and game engine, `server/` owns authentication and durable transactions, and `src/` contains the browser presentation. Every accepted game action validates before committing, carries an identity for duplicate protection, and publishes only public state. Private decks and random state are not sent to browsers.
 
-Asset provenance is recorded in [the source ledger](public/assets/sources.json), [card-art sources](docs/card-art-sources.md), and [the cinematic asset manifest](public/assets/cinematic/manifest.json). Existing game names, marks, and reference artwork retain their respective owners and provenance; this repository does not claim they are newly licensed. No project license is declared.
+Asset provenance is recorded in [the source ledger](public/assets/sources.json), [card-art sources](docs/card-art-sources.md), [the cinematic asset manifest](public/assets/cinematic/manifest.json), and [UNO research](docs/uno-research.md). The [UNO artwork manifest](public/assets/uno/manifest.json) distinguishes Classic CC0 vectors, complete official Stitch crops, and explicitly adapted Stitch faces; a complete official Stitch scan set is not claimed. Existing game names, marks, and reference artwork retain their respective owners and provenance; this repository does not claim they are newly licensed. No project license is declared.
 
 Local saved games, credentials, tunnel/process records, deployment helpers, build output, dependencies, and test captures are excluded from this repository.

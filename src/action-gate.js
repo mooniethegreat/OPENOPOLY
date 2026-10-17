@@ -1,7 +1,7 @@
 const ENGINE_ACTIONS = new Set(['roll', 'endTurn', 'buy', 'declinePurchase', 'auction', 'bid', 'passAuction', 'payJail', 'useJailCard', 'build', 'buildGroup', 'sellBuilding', 'sellGroupBuildings', 'mortgage', 'unmortgage', 'bankrupt', 'auctionBuilding', 'retainMortgage', 'redeemMortgage']);
 const SENSITIVE_CONTRACTS = new Set(['contract:propose', 'contract:revise', 'contract:sign', 'contract:confirm', 'contract:pay']);
 
-export const isDecisionAction = type => ENGINE_ACTIONS.has(type) || type === 'money:send' || type === 'room:start' || SENSITIVE_CONTRACTS.has(type);
+export const isDecisionAction = type => ENGINE_ACTIONS.has(type) || type?.startsWith('uno:') || type === 'money:send' || type === 'room:start' || SENSITIVE_CONTRACTS.has(type);
 export const mayActDuringPresentation = type => type === 'chat:send' || type?.startsWith('vote:') || ['room:appearance', 'contract:cancel', 'contract:reject'].includes(type);
 export const decisionContext = room => ({
   expectedDecisionVersion: room?.decisionVersion ?? 0,
@@ -29,6 +29,7 @@ export function prepareCommand(payload, renderedRoom, currentRoom, playerId, { c
   }
   if (!mayActDuringPresentation(payload.type) && currentRoom.presentation?.endsAt > serverTime) throw new Error('Wait for the shared dice and movement to finish.');
   if (ENGINE_ACTIONS.has(payload.type) && !currentRoom.game?.permittedActions?.[playerId]?.includes(payload.type)) throw new Error('That action is not available to you in the current game state.');
+  if (payload.type?.startsWith('uno:') && !currentRoom.game?.permittedActions?.[playerId]?.includes(payload.type)) throw new Error('That card action is not available in the current game state.');
   if (['buy', 'auction', 'declinePurchase'].includes(payload.type) && payload.propertyId !== currentRoom.game?.pendingPurchase) throw new Error('That property decision has already changed. Review the current landing.');
   if (payload.type === 'room:start' && (currentRoom.status !== 'lobby' || currentRoom.hostId !== playerId || currentRoom.players.length < 2)) throw new Error('Only the host can start a lobby with at least two players.');
   return { ...structuredClone(payload), ...context, commandId };

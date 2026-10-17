@@ -18,7 +18,10 @@ import MoneyFlight from './MoneyFlight.jsx';
 import Welcome from './Welcome.jsx';
 import { MatchResults, SettingsSections } from './CinematicViews.jsx';
 import EmoteLayer from './EmoteLayer.jsx';
-import { money, setInlandData, spaceName, THEMES } from './themes.js';
+import { money, spaceName, THEMES } from './themes.js';
+import GameChooser from './GameChooser.jsx';
+import { UnoArtworkProvider } from './UnoCard.jsx';
+import { UnoRoom, UnoWelcome, UnoRulesModal, UnoSettings } from './Uno.jsx';
 
 // Persisted names predate Openopoly; keep existing seats, retries and preferences compatible.
 const SESSION_KEY = 'monopoly-table-session-v1';
@@ -50,8 +53,12 @@ function requestedRoom() {
   const url = new URL(window.location.href);
   return (url.searchParams.get('room') || url.pathname.match(/\/room\/([^/]+)/)?.[1] || '').toUpperCase();
 }
+function requestedGame() {
+  return new URL(window.location.href).searchParams.get('game') === 'uno' ? 'uno' : 'monopoly';
+}
 
 export default function App() {
+  const [chosenGame, setChosenGame] = useState(() => requestedRoom() ? savedSession(requestedRoom())?.gameType || requestedGame() : new URL(window.location.href).searchParams.get('game') === 'uno' ? 'uno' : null);
   const [session, setSession] = useState(null);
   const [room, setRoom] = useState(null);
   const [restoring, setRestoring] = useState(Boolean(savedSession()));
@@ -63,7 +70,6 @@ export default function App() {
   const [panel, setPanel] = useState(null);
   const [composer, setComposer] = useState(null);
   const [modal, setModal] = useState(null);
-  const [themeDataReady, setThemeDataReady] = useState(false);
   const [originalArtwork, setOriginalArtwork] = useState(true);
   const [localAppearance, setLocalAppearance] = useState(readAppearance);
   const socketRef = useRef(null);
@@ -76,7 +82,8 @@ export default function App() {
   const presentation = usePresentation(room);
   const audio = useGameAudio({ room, playerId, connected, presentation, panel, composer, modal, selected, toast });
   const shownResults = useRef(null);
-  useEffect(() => { const key = !presentation.active && room?.game?.status === 'finished' ? `${room.code}:${room.game.winnerId}` : null; if (key && shownResults.current !== key) { shownResults.current = key; setModal('results'); } }, [room?.code, room?.game?.status, room?.game?.winnerId, presentation.active]);
+  useEffect(() => { document.title = room?.gameType === 'uno' || chosenGame === 'uno' ? 'OpenUno' : room || chosenGame === 'monopoly' ? 'Openopoly' : 'Openopoly & OpenUno'; }, [room?.gameType, chosenGame]);
+  useEffect(() => { const key = room?.game?.kind !== 'uno' && !presentation.active && room?.game?.status === 'finished' ? `${room.code}:${room.game.winnerId}` : null; if (key && shownResults.current !== key) { shownResults.current = key; setModal('results'); } }, [room?.code, room?.game?.status, room?.game?.winnerId, presentation.active]);
   const { emotes, sendEmote, emoteStatus, emoteServerNow } = useEmotes({ room, playerId, connected, socketRef, playEmote: audio.playEmote });
   if (!presentation.active) stableGame.current = room?.game || null;
   const visualGame = presentation.active ? stableGame.current || room?.game : room?.game;
@@ -99,7 +106,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    fetch('/assets/inland-empire.json').then(result => result.ok ? result.json() : null).then(data => { if (data) { setInlandData(data); setThemeDataReady(true); } }).catch(() => {});
     const stored = savedSession();
     const code = requestedRoom();
     if (!stored || (code && code !== stored.roomCode)) { setRestoring(false); return; }
@@ -107,10 +113,18 @@ export default function App() {
     fetch(`/api/rooms/${encodeURIComponent(stored.roomCode)}`, { headers: { Authorization: `Bearer ${stored.sessionToken}` } }).then(async response => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'The saved room could not be found.');
-      if (active) { ingestRoom(data.room); setSession({ ...stored, playerId: data.playerId }); }
+      if (active) { const restored = { ...stored, playerId: data.playerId, gameType: data.room.gameType || 'monopoly' }; persistSession(restored); ingestRoom(data.room); setSession(restored); setChosenGame(restored.gameType); }
     }).catch(error => { if (active) notify(`${error.message} Your saved seat is still available below.`, 'error'); }).finally(() => active && setRestoring(false));
     return () => { active = false; };
   }, [notify]);
+
+  useEffect(() => {
+    const code = requestedRoom();
+    if (!code || savedSession(code)) return;
+    let active = true;
+    fetch(`/api/rooms/${encodeURIComponent(code)}/preview`).then(response => response.ok ? response.json() : null).then(data => { const gameType = data?.gameType || data?.room?.gameType; if (active && ['uno', 'monopoly'].includes(gameType)) setChosenGame(gameType); }).catch(() => {});
+    return () => { active = false; };
+  }, []);
 
   const finishRequest = useCallback((request, result) => {
     if (inFlight.current !== request) return;
@@ -201,37 +215,39 @@ export default function App() {
   }, [notify, playerId, session, sendRequest]);
   const action = useCallback(payload => dispatchAction(payload, room), [dispatchAction, room]);
 
-  const enterRoom = async ({ name, code, token, theme, allowPassingUnowned = false }) => {
+  const enterRoom = async ({ name, code, token, theme, gameType = 'monopoly', rules, allowPassingUnowned = false }) => {
     if (joining.current) return;
     joining.current = true;
     setPending('join');
     try {
       const previousSeat = code ? savedSession(code.toUpperCase()) : null;
-      const response = await fetch(code ? `/api/rooms/${encodeURIComponent(code.toUpperCase())}/join` : '/api/rooms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, token, theme, rules: { allowPassingUnowned }, appearance: localAppearance, ...(previousSeat ? { sessionToken: previousSeat.sessionToken } : {}) }) });
+      const response = await fetch(code ? `/api/rooms/${encodeURIComponent(code.toUpperCase())}/join` : '/api/rooms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, token, theme, gameType, rules: gameType === 'uno' ? rules : { allowPassingUnowned }, appearance: localAppearance, ...(previousSeat ? { sessionToken: previousSeat.sessionToken } : {}) }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Unable to open the room.');
-      const nextSession = { playerId: data.playerId, sessionToken: data.sessionToken, roomCode: data.room.code, name, theme: data.room.theme };
+      const nextSession = { playerId: data.playerId, sessionToken: data.sessionToken, roomCode: data.room.code, name, theme: data.room.theme, gameType: data.room.gameType || 'monopoly' };
       persistSession(nextSession);
-      window.history.replaceState({}, '', `/?room=${data.room.code}`);
-      setSession(nextSession); ingestRoom(data.room); setPanel(null); notify(code ? 'Room joined.' : 'Room created.');
+      window.history.replaceState({}, '', `/?room=${data.room.code}${nextSession.gameType === 'uno' ? '&game=uno' : ''}`);
+      setSession(nextSession); setChosenGame(nextSession.gameType); ingestRoom(data.room); setPanel(null); notify(code ? 'Room joined.' : 'Room created.');
     } catch (error) { notify(error.message, 'error'); } finally { joining.current = false; setPending(''); }
   };
 
   const copyInvite = useCallback(async () => {
     if (!room) return;
-    const invite = `${window.location.origin}/?room=${room.code}`;
+    const invite = `${window.location.origin}/?room=${room.code}${room.gameType === 'uno' ? '&game=uno' : ''}`;
     try { await navigator.clipboard.writeText(invite); notify('Room link copied.'); }
     catch { setModal('invite'); }
   }, [room, notify]);
 
   const leave = () => {
     socketRef.current?.disconnect();
-    setSession(null); ingestRoom(null); setModal(null); setSelected(null); setPanel(null); setComposer(null); stableGame.current = null;
+    setSession(null); setChosenGame(null); ingestRoom(null); setModal(null); setSelected(null); setPanel(null); setComposer(null); stableGame.current = null;
     if (session) persistSession(session);
     localStorage.removeItem(ACTIVE_KEY); window.history.replaceState({}, '', '/');
   };
 
   const game = room?.game;
+  const isUno = room?.gameType === 'uno' || game?.kind === 'uno';
+  const unoHome = !room && chosenGame === 'uno';
   const board = getBoard(game || room?.theme);
   const decisionOpen = !presentation.active && game && (game.pendingMortgage || ['buy', 'auction', 'debt'].includes(game.phase) || (['roll', 'end'].includes(game.phase) && game.players.find(player => player.id === game.currentPlayerId)?.inJail));
   const seatLimit = room?.theme === 'inland-empire' ? 6 : 8;
@@ -246,21 +262,21 @@ export default function App() {
   };
   const openContracts = room?.contracts?.filter(contract => contract.status === 'proposed' && contract.partyIds.includes(playerId) && !contract.signatures.some(signature => signature.playerId === playerId)).length || 0;
   const openVotes = room?.votes?.filter(vote => vote.status === 'open' && !vote.ballots?.[playerId]).length || 0;
-  const value = { room, game, visualGame, presentation, playerId, me, players, action, pending, connected, notify, selected, setSelected, panel, setPanel, composer, setComposer, setModal, copyInvite, themeDataReady, originalArtwork, setOriginalArtwork, emotes, sendEmote, emoteStatus, emoteServerNow };
+  const value = { room, game, visualGame, presentation, playerId, me, players, action, pending, connected, notify, selected, setSelected, panel, setPanel, composer, setComposer, setModal, copyInvite, originalArtwork, setOriginalArtwork, emotes, sendEmote, emoteStatus, emoteServerNow };
 
-  return <GameContext.Provider value={value}>
-    <div className={`app ${room ? 'at-table' : 'at-home'}`} data-theme="cinematic" data-palette={appearance.palette} data-mode={appearance.mode} onClickCapture={preventRepeatedActivation} onKeyDownCapture={preventRepeatedActivation}>
+  return <UnoArtworkProvider><GameContext.Provider value={value}>
+    <div className={`app ${room ? 'at-table' : 'at-home'} ${isUno ? 'uno-active' : unoHome ? 'uno-home' : !room && !chosenGame ? 'chooser-active' : ''}`} data-theme="cinematic" data-palette={appearance.palette} data-mode={appearance.mode} onClickCapture={preventRepeatedActivation} onKeyDownCapture={preventRepeatedActivation}>
       <header className="app-header">
-        <a className="wordmark" href={room ? `/?room=${room.code}` : '/'} aria-label="Openopoly home"><span className="brand-m">O</span><span>OPENOPOLY <span className="online-wordmark">ONLINE</span></span></a>
-        {room && <div className="table-header-room"><span className="room-code">{room.code}</span><label className="compact-edition"><Landmark size={14} /><select aria-label="Game edition" value={room.theme} disabled={!isHost || Boolean(pending) || room.status !== 'lobby'} onChange={event => action({ type: 'room:theme', theme: event.target.value })}><option value="classic">Classic Openopoly</option><option value="inland-empire">Inland Empire-opoly</option></select></label></div>}
+        <a className="wordmark" href={room ? `/?room=${room.code}${isUno ? '&game=uno' : ''}` : '/'} aria-label={isUno || unoHome ? 'OpenUno home' : 'Openopoly home'}><span className="brand-m">O</span><span>{isUno || unoHome ? 'OPENUNO' : !room && !chosenGame ? 'GAME NIGHT' : 'OPENOPOLY'} <span className="online-wordmark">ONLINE</span></span></a>
+        {room && (isUno ? <div className="table-header-room uno-header-edition"><span className="room-code">{room.code}</span><span>{(game?.rules || room.rules)?.edition === 'stitch' ? 'DISNEY LILO & STITCH' : 'CLASSIC UNO'}</span></div> : <div className="table-header-room"><span className="room-code">{room.code}</span><label className="compact-edition"><Landmark size={14} /><select aria-label="Game edition" value={room.theme} disabled={!isHost || Boolean(pending) || room.status !== 'lobby'} onChange={event => action({ type: 'room:theme', theme: event.target.value })}><option value="classic">Classic Openopoly</option><option value="inland-empire">Inland Empire-opoly</option></select></label></div>)}
         <nav className="header-nav"><SoundControls audio={audio} /><button className="icon-button appearance-button" onClick={() => setModal('appearance')} aria-label="Appearance"><Palette size={18} /><span>Appearance</span></button>
           {room && <span className={`connection ${connected ? '' : 'offline'}`}><span className="live-dot" />{connected ? 'CONNECTED' : 'RECONNECTING'}</span>}
-          <button className="icon-button rules-button" onClick={() => setModal('rules')} aria-label="Game rules"><BookOpen size={18} /><span>Rules</span></button>
+          <button className="icon-button rules-button" onClick={() => setModal(!room && !chosenGame ? 'choose-rules' : 'rules')} aria-label="Game rules"><BookOpen size={18} /><span>Rules</span></button>
           {room && <><button className="icon-button invite-button" onClick={copyInvite} aria-label="Invite players"><Link size={17} /><span>Invite</span></button><button className="avatar-button" style={{ '--player-color': me?.color }} onClick={() => setModal('settings')} aria-label="Room and profile settings">{me?.name?.slice(0, 1).toUpperCase() || 'O'}</button></>}
         </nav>
       </header>
 
-      {restoring ? <main className="restoring"><span className="loading-ring" /><h1>Connecting…</h1><p>Restoring your saved room.</p></main> : !room ? <Welcome pending={pending} enterRoom={enterRoom} initialCode={requestedRoom()} onRules={() => setModal('rules')} onSettings={() => setModal('appearance')} savedRooms={Object.values(savedTables())} /> : <>
+      {restoring ? <main className="restoring"><span className="loading-ring" /><h1>Connecting…</h1><p>Restoring your saved room.</p></main> : !room ? !chosenGame ? <GameChooser onChoose={setChosenGame} savedRooms={Object.values(savedTables())} onRules={() => setModal('choose-rules')} /> : unoHome ? <UnoWelcome pending={pending} enterRoom={enterRoom} initialCode={requestedRoom()} onGames={() => { setChosenGame(null); window.history.replaceState({}, '', '/'); }} onRules={() => setModal('rules')} savedRooms={Object.values(savedTables()).filter(seat => seat.gameType === 'uno')} /> : <><button className="monopoly-all-games text-button" onClick={() => { setChosenGame(null); window.history.replaceState({}, '', '/'); }}><ArrowLeft size={15} />All games</button><Welcome pending={pending} enterRoom={enterRoom} initialCode={requestedRoom()} onRules={() => setModal('rules')} onSettings={() => setModal('appearance')} savedRooms={Object.values(savedTables()).filter(seat => seat.gameType !== 'uno')} /></> : isUno ? <UnoRoom /> : <>
         <main className="game-layout immersive-layout">
           <PlayerRail seatLimit={seatLimit} />
           <section className={`play-area ${decisionOpen ? 'has-decision' : ''}`} aria-label="Game board and turn controls">
@@ -276,8 +292,8 @@ export default function App() {
         <GameDrawer><SidePanel /></GameDrawer>
       </>}
 
-      <PaymentFeedback room={room} playerId={playerId} presentation={presentation} />
-      <MoneyFlight room={room} presentation={presentation} />
+      {!isUno && <PaymentFeedback room={room} playerId={playerId} presentation={presentation} />}
+      {!isUno && <MoneyFlight room={room} presentation={presentation} />}
       <EmoteLayer />
       {toast && <div className={`toast ${toast.type}`} role={toast.type === 'error' ? 'alert' : 'status'}>{toast.type === 'error' ? <CircleHelp size={18} /> : <Check size={18} />}<span>{toast.message}</span><button onClick={() => setToast(null)} aria-label="Dismiss notification"><X size={16} /></button></div>}
       {uncertain && <section className="uncertain-command" role="alert" data-testid="uncertain-command"><strong>Confirming your last action</strong><p>Its result is not yet confirmed. Check before continuing, or retry this same action.</p><div><button className="btn" disabled={!connected || uncertain.checking} onClick={() => recoverRequest(inFlight.current)}>{uncertain.checking ? 'Checking…' : 'Check result'}</button><button className="btn primary" disabled={!connected || uncertain.checking} onClick={() => sendRequest(inFlight.current)}>Retry same action</button></div></section>}
@@ -285,22 +301,22 @@ export default function App() {
       {(composer === 'contract' || composer?.type === 'contract') && <ContractComposer existing={composer?.contract || null} onClose={() => setComposer(null)} />}
       {composer === 'money' && <MoneyComposer onClose={() => setComposer(null)} />}
       {composer === 'vote' && <VoteComposer onClose={() => setComposer(null)} />}
-      {modal === 'rules' && <RulesModal onClose={() => setModal(null)} />}{modal === 'appearance' && <Modal title="Settings" eyebrow="PREFERENCES" className="settings-modal" onClose={() => setModal(null)}><SettingsSections audio={audio} appearance={appearance} onAppearanceChange={changeAppearance} appearanceDisabled={room ? !isHost || Boolean(pending) || !connected : false} inRoom={Boolean(room)} isHost={isHost} /></Modal>}
+      {modal === 'rules' && (isUno || unoHome ? <UnoRulesModal edition={(game?.rules || room?.rules)?.edition} onClose={() => setModal(null)} /> : <RulesModal onClose={() => setModal(null)} />)}{modal === 'choose-rules' && <Modal title="Choose your game" eyebrow="HOW TO PLAY" onClose={() => setModal(null)}><div className="chooser-rules-options"><button className="btn" onClick={() => { setChosenGame('monopoly'); setModal('rules'); }}>Openopoly<ArrowRight size={17} /></button><button className="btn" onClick={() => { setChosenGame('uno'); setModal('rules'); }}>OpenUno<ArrowRight size={17} /></button></div></Modal>}{modal === 'appearance' && <Modal title="Settings" eyebrow="PREFERENCES" className="settings-modal" onClose={() => setModal(null)}><SettingsSections audio={audio} appearance={appearance} onAppearanceChange={changeAppearance} appearanceDisabled={room ? !isHost || Boolean(pending) || !connected : false} inRoom={Boolean(room)} isHost={isHost} /></Modal>}
       {modal === 'results' && <MatchResults onClose={() => setModal(null)} onNewGame={leave} />}
-      {modal === 'invite' && <Modal title="Invite players" onClose={() => setModal(null)}><p>Share this room link. Players join with a display name.</p><input readOnly value={`${window.location.origin}/?room=${room.code}`} onFocus={event => event.target.select()} /><p className="muted">Room code: <strong>{room.code}</strong></p></Modal>}
-      {modal === 'settings' && <Modal title="Table settings" eyebrow="PREFERENCES" className="settings-modal" onClose={() => setModal(null)}><SettingsSections audio={audio} appearance={appearance} onAppearanceChange={changeAppearance} appearanceDisabled={!isHost || Boolean(pending) || !connected} inRoom isHost={isHost} initialTab="game" gameContent={<><div className="profile-overview"><Token token={me?.token} size={54} /><div><h3>{me?.name}</h3><p>{isHost ? 'Host' : 'Player'} · Room {room.code}</p></div></div>{room.status === 'lobby' && <ProfileForm me={me} players={players} action={action} pending={pending} notify={notify} />}{isHost && room.status === 'lobby' && <label className="form-label">Game edition<select value={room.theme} disabled={Boolean(pending)} onChange={event => action({ type: 'room:theme', theme: event.target.value })}><option value="classic">Classic Openopoly</option><option value="inland-empire">Inland Empire-opoly</option></select><small>Your choice sets the board and rules for everyone, and locks when the game starts.</small></label>}<PurchaseRule checked={(game?.rules || room.rules)?.allowPassingUnowned === true} disabled={!isHost || Boolean(pending) || !connected} locked={room.status !== 'lobby'} onChange={value => action({ type: 'room:rules', rules: { allowPassingUnowned: value } })} /><div className="settings-divider" />{isHost && room.players.length > 1 && <label className="form-label">Transfer host<select defaultValue="" disabled={Boolean(pending)} onChange={async event => { if (event.target.value && await action({ type: 'room:transfer-host', playerId: event.target.value })) notify('Host transferred.'); }}><option value="" disabled>Choose a new host</option>{room.players.filter(player => player.id !== playerId).map(player => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>}<p className="muted">Your player session is saved in this browser. Rejoin from the home screen or the same room link.</p><button className="btn danger-outline" onClick={leave}><LogOut size={16} />Return home</button></>} /></Modal>}
+      {modal === 'invite' && <Modal title="Invite players" onClose={() => setModal(null)}><p>Share this room link. Players join with a display name.</p><input readOnly value={`${window.location.origin}/?room=${room.code}${isUno ? '&game=uno' : ''}`} onFocus={event => event.target.select()} /><p className="muted">Room code: <strong>{room.code}</strong></p></Modal>}
+      {modal === 'settings' && <Modal title="Table settings" eyebrow="PREFERENCES" className="settings-modal" onClose={() => setModal(null)}><SettingsSections audio={audio} appearance={appearance} onAppearanceChange={changeAppearance} appearanceDisabled={!isHost || Boolean(pending) || !connected} inRoom isHost={isHost} initialTab="game" gameContent={isUno ? <UnoSettings onHome={leave} /> : <><div className="profile-overview"><Token token={me?.token} size={54} /><div><h3>{me?.name}</h3><p>{isHost ? 'Host' : 'Player'} · Room {room.code}</p></div></div>{room.status === 'lobby' && <ProfileForm me={me} players={players} action={action} pending={pending} notify={notify} />}{isHost && room.status === 'lobby' && <label className="form-label">Game edition<select value={room.theme} disabled={Boolean(pending)} onChange={event => action({ type: 'room:theme', theme: event.target.value })}><option value="classic">Classic Openopoly</option><option value="inland-empire">Inland Empire-opoly</option></select><small>Your choice sets the board and rules for everyone, and locks when the game starts.</small></label>}<PurchaseRule checked={(game?.rules || room.rules)?.allowPassingUnowned === true} disabled={!isHost || Boolean(pending) || !connected} locked={room.status !== 'lobby'} onChange={value => action({ type: 'room:rules', rules: { allowPassingUnowned: value } })} /><div className="settings-divider" />{isHost && room.players.length > 1 && <label className="form-label">Transfer host<select defaultValue="" disabled={Boolean(pending)} onChange={async event => { if (event.target.value && await action({ type: 'room:transfer-host', playerId: event.target.value })) notify('Host transferred.'); }}><option value="" disabled>Choose a new host</option>{room.players.filter(player => player.id !== playerId).map(player => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>}<p className="muted">Your player session is saved in this browser. Rejoin from the home screen or the same room link.</p><button className="btn danger-outline" onClick={leave}><LogOut size={16} />Return home</button></>} /></Modal>}
     </div>
-  </GameContext.Provider>;
+  </GameContext.Provider></UnoArtworkProvider>;
 }
 
-export function Modal({ title, eyebrow, children, onClose, className = '' }) {
+export function Modal({ title, eyebrow, children, onClose, className = '', dismissible = true }) {
   const ref = useRef(null);
   useEffect(() => {
     const previous = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     const handler = event => {
       if ([...document.querySelectorAll('.modal-backdrop .modal')].at(-1) !== ref.current) return;
-      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); onClose(); }
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); if (dismissible) onClose(); }
       if (event.key === 'Tab') {
         const focusable = [...ref.current.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href], [tabindex="0"]')].filter(element => element.getClientRects().length && getComputedStyle(element).visibility !== 'hidden');
         if (!focusable.length) return;
@@ -316,7 +332,7 @@ export function Modal({ title, eyebrow, children, onClose, className = '' }) {
     first?.focus();
     return () => { window.removeEventListener('keydown', handler); document.body.style.overflow = previousOverflow; if (previous?.isConnected && previous.getClientRects().length) previous.focus(); };
   }, []);
-  return <div className="modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget && event.detail <= 1) onClose(); }}><section ref={ref} className={`modal ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className="modal-header"><div>{eyebrow && <span className="eyebrow">{eyebrow}</span>}<h2>{title}</h2></div><button className="icon-button" aria-label="Close dialog" onClick={onClose}><X size={21} /></button></header><div className="modal-body">{children}</div></section></div>;
+  return <div className="modal-backdrop" onMouseDown={event => { if (dismissible && event.target === event.currentTarget && event.detail <= 1) onClose(); }}><section ref={ref} className={`modal ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className="modal-header"><div>{eyebrow && <span className="eyebrow">{eyebrow}</span>}<h2>{title}</h2></div>{dismissible && <button className="icon-button" aria-label="Close dialog" onClick={onClose}><X size={21} /></button>}</header><div className="modal-body">{children}</div></section></div>;
 }
 
 function ProfileForm({ me, players, action, pending, notify }) {

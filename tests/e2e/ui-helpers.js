@@ -1,3 +1,7 @@
+export async function chooseOpenopoly(page) {
+  await page.getByRole('button', { name: 'Play Openopoly', exact: true }).click();
+}
+
 export async function openGameDrawer(page, name) {
   const desktopTab = page.getByRole('tab', { name: new RegExp(`^${name}`) });
   if (await desktopTab.isVisible()) await desktopTab.click();

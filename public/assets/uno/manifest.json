@@ -1,0 +1,1589 @@
+{
+  "schemaVersion": 1,
+  "retrievedAt": "2026-10-17",
+  "notes": "Classic is a CC0 vector reproduction, not an official scan. Stitch uses complete official product crops where available; gaps use explicitly adapted source-art faces. See docs/uno-research.md.",
+  "sources": {
+    "classicDeck": {
+      "title": "UNO cards deck.svg",
+      "author": "Dmitry Fomin",
+      "url": "https://commons.wikimedia.org/wiki/File:UNO_cards_deck.svg",
+      "license": "CC0-1.0"
+    },
+    "unoLogo": {
+      "title": "UNO Logo.svg",
+      "author": "Mattel",
+      "url": "https://commons.wikimedia.org/wiki/File:UNO_Logo.svg",
+      "license": "Commons PD-textlogo; trademark rights remain"
+    },
+    "mattelStitch": {
+      "title": "Mattel JCC10 product gallery",
+      "url": "https://shopping.mattel.com/es-es/products/uno-disney-lilo-y-stitch-juego-de-cartas-jcc10-es-es",
+      "license": "Copyright Mattel / Disney; no open license asserted",
+      "files": {
+        "product-3.png": {
+          "url": "https://shopping.mattel.com/cdn/shop/files/p4pe1wdycbiqhlzh3nal_bbf17f09-5cbd-4855-bc4f-ba5230123d7c.png?v=1738010366",
+          "sha256": "7e7760dfd5939ee22e79f2ca7467706c984f9252cecbe15ab80f5d5b4c206fd9"
+        },
+        "product-4.png": {
+          "url": "https://shopping.mattel.com/cdn/shop/files/slucww60cefzohtvaycp.png?v=1738010366",
+          "sha256": "54ab5d3f41d5cd5e65d7d668e680c4653c18bfaef289ef2924c9f3cdbec02c1a"
+        }
+      }
+    },
+    "reviewNumbers": {
+      "title": "UNO Disney's Lilo and Stitch Card Meanings",
+      "author": "Eric Mortensen / Geeky Hobbies",
+      "url": "https://www.geekyhobbies.com/uno-disneys-lilo-and-stitch-card-meanings/",
+      "imageUrl": "https://www.geekyhobbies.com/wp-content/uploads/2024/09/UNO-Disneys-Lilo-and-Stitch-Number-Cards.jpg",
+      "license": "Owner review photography; no open license asserted"
+    }
+  },
+  "editions": {
+    "classic": {
+      "cards": {
+        "red-0": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-1": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 241,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-2": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 481,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-3": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 721,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-4": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 961,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-5": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1201,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-6": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1441,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-7": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1681,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-8": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1921,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-9": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2161,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-skip": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2401,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-reverse": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2641,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "red-draw-two": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2881,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-0": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-1": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 241,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-2": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 481,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-3": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 721,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-4": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 961,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-5": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1201,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-6": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1441,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-7": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1681,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-8": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1921,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-9": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2161,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-skip": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2401,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-reverse": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2641,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "yellow-draw-two": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2881,
+            "y": 361,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-0": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-1": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 241,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-2": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 481,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-3": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 721,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-4": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 961,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-5": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1201,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-6": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1441,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-7": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1681,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-8": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1921,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-9": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2161,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-skip": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2401,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-reverse": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2641,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "green-draw-two": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2881,
+            "y": 721,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-0": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-1": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 241,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-2": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 481,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-3": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 721,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-4": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 961,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-5": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1201,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-6": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1441,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-7": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1681,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-8": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 1921,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-9": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2161,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-skip": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2401,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-reverse": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2641,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "blue-draw-two": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 2881,
+            "y": 1081,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "wild": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 3121,
+            "y": 1,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        },
+        "wild-draw-four": {
+          "src": "/assets/uno/classic/deck-source.svg",
+          "crop": {
+            "x": 3121,
+            "y": 1441,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3362,
+          "sourceHeight": 2882,
+          "status": "cc0-vector-reproduction",
+          "sourceId": "classicDeck"
+        }
+      },
+      "back": {
+        "src": "/assets/uno/classic/back.svg",
+        "sourceWidth": 240,
+        "sourceHeight": 360,
+        "status": "adapted-logo-layout",
+        "sourceId": "unoLogo"
+      },
+      "artSummary": {
+        "frontDefinitions": 54,
+        "cc0VectorReproductions": 54,
+        "officialScanSet": false
+      }
+    },
+    "stitch": {
+      "colorNames": {
+        "red": "Pink",
+        "yellow": "Purple",
+        "green": "Green",
+        "blue": "Blue"
+      },
+      "cards": {
+        "red-0": {
+          "src": "/assets/uno/stitch/product-4.png",
+          "crop": {
+            "x": 1197,
+            "y": 404,
+            "width": 187,
+            "height": 285
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "red-1": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 240,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Stitch"
+        },
+        "red-2": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 480,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo dancing"
+        },
+        "red-3": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 720,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Nani surfing"
+        },
+        "red-4": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 960,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "David surfing"
+        },
+        "red-5": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1200,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Jumba"
+        },
+        "red-6": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1440,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Pleakley"
+        },
+        "red-7": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1680,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Cobra Bubbles"
+        },
+        "red-8": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1920,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo and Stitch on a bicycle"
+        },
+        "red-9": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2160,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Grand Councilwoman"
+        },
+        "red-skip": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2400,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo and Stitch resting"
+        },
+        "red-reverse": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2640,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Captain Gantu"
+        },
+        "red-draw-two": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2880,
+            "y": 0,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Jumba and Pleakley"
+        },
+        "yellow-0": {
+          "src": "/assets/uno/stitch/product-4.png",
+          "crop": {
+            "x": 1247,
+            "y": 1333,
+            "width": 186,
+            "height": 283
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "yellow-1": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 240,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Stitch"
+        },
+        "yellow-2": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 480,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo dancing"
+        },
+        "yellow-3": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 720,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Nani surfing"
+        },
+        "yellow-4": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 960,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "David surfing"
+        },
+        "yellow-5": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1200,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Jumba"
+        },
+        "yellow-6": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1440,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Pleakley"
+        },
+        "yellow-7": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 1267,
+            "y": 1361,
+            "width": 373,
+            "height": 579
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "yellow-8": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1920,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo and Stitch on a bicycle"
+        },
+        "yellow-9": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2160,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Grand Councilwoman"
+        },
+        "yellow-skip": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 816,
+            "y": 1361,
+            "width": 374,
+            "height": 579
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "yellow-reverse": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2640,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Captain Gantu"
+        },
+        "yellow-draw-two": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2880,
+            "y": 360,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Jumba and Pleakley"
+        },
+        "green-0": {
+          "src": "/assets/uno/stitch/product-4.png",
+          "crop": {
+            "x": 1226,
+            "y": 711,
+            "width": 183,
+            "height": 287
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "green-1": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 240,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Stitch"
+        },
+        "green-2": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 480,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo dancing"
+        },
+        "green-3": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 720,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Nani surfing"
+        },
+        "green-4": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 960,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "David surfing"
+        },
+        "green-5": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1200,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Jumba"
+        },
+        "green-6": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1440,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Pleakley"
+        },
+        "green-7": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1680,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Cobra Bubbles"
+        },
+        "green-8": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1920,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo and Stitch on a bicycle"
+        },
+        "green-9": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 366,
+            "y": 1361,
+            "width": 373,
+            "height": 579
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "green-skip": {
+          "src": "/assets/uno/stitch/product-4.png",
+          "crop": {
+            "x": 1058,
+            "y": 1640,
+            "width": 183,
+            "height": 288
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "green-reverse": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 1267,
+            "y": 717,
+            "width": 373,
+            "height": 581
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "green-draw-two": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2880,
+            "y": 720,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Jumba and Pleakley"
+        },
+        "blue-0": {
+          "src": "/assets/uno/stitch/product-4.png",
+          "crop": {
+            "x": 1211,
+            "y": 1023,
+            "width": 186,
+            "height": 287
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "blue-1": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 240,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Stitch"
+        },
+        "blue-2": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 480,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo dancing"
+        },
+        "blue-3": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 720,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Nani surfing"
+        },
+        "blue-4": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 960,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "David surfing"
+        },
+        "blue-5": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1200,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Jumba"
+        },
+        "blue-6": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1440,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Pleakley"
+        },
+        "blue-7": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1680,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Cobra Bubbles"
+        },
+        "blue-8": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 1920,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo and Stitch on a bicycle"
+        },
+        "blue-9": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2160,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "reviewNumbers",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Grand Councilwoman"
+        },
+        "blue-skip": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2400,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Lilo and Stitch resting"
+        },
+        "blue-reverse": {
+          "src": "/assets/uno/stitch/adapted-atlas.svg",
+          "crop": {
+            "x": 2640,
+            "y": 1080,
+            "width": 240,
+            "height": 360
+          },
+          "sourceWidth": 3120,
+          "sourceHeight": 1440,
+          "status": "adapted-source-art",
+          "sourceId": "mattelStitch",
+          "adaptation": "Source illustration cropped into a digital suit frame; not an exact printed face.",
+          "illustration": "Captain Gantu"
+        },
+        "blue-draw-two": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 366,
+            "y": 717,
+            "width": 373,
+            "height": 581
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "wild-draw-four": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 365,
+            "y": 60,
+            "width": 373,
+            "height": 579
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "wild": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 816,
+            "y": 60,
+            "width": 374,
+            "height": 579
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        },
+        "ohana": {
+          "src": "/assets/uno/stitch/product-3.png",
+          "crop": {
+            "x": 1267,
+            "y": 60,
+            "width": 374,
+            "height": 579
+          },
+          "sourceWidth": 2000,
+          "sourceHeight": 2000,
+          "status": "official-product-crop",
+          "sourceId": "mattelStitch"
+        }
+      },
+      "back": {
+        "src": "/assets/uno/stitch/product-3.png",
+        "crop": {
+          "x": 816,
+          "y": 717,
+          "width": 374,
+          "height": 581
+        },
+        "sourceWidth": 2000,
+        "sourceHeight": 2000,
+        "status": "official-product-crop",
+        "sourceId": "mattelStitch"
+      },
+      "artSummary": {
+        "frontDefinitions": 55,
+        "officialProductCrops": 13,
+        "adaptedSourceArt": 42,
+        "completeOfficialScanSet": false
+      }
+    }
+  }
+}

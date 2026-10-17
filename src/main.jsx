@@ -6,6 +6,7 @@ import './styles.css';
 import './recovery.css';
 import './mobile-game.css';
 import './table-chrome.css';
+import './uno.css';
 
 const stopDiagnostics = installViewDiagnostics();
 if (import.meta.hot) import.meta.hot.dispose(stopDiagnostics);

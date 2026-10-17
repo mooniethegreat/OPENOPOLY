@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { io } from 'socket.io-client';
 import { randomUUID } from 'node:crypto';
 import { decisionContext, prepareCommand } from '../../src/action-gate.js';
+import { chooseOpenopoly } from './ui-helpers.js';
 
 const baseURL = process.env.E2E_BASE_URL || 'http://127.0.0.1:3199';
 const rollCount = room => room.game.log.filter(event => event.type === 'roll').length;
@@ -29,7 +30,7 @@ function recordCommands(page) {
 }
 async function join(page, name, code) {
   await page.goto(code ? `/?room=${code}` : '/');
-  if (!code) await page.getByRole('button', { name: 'Create room', exact: true }).click();
+  if (!code) { await chooseOpenopoly(page); await page.getByRole('button', { name: 'Create room', exact: true }).click(); }
   await page.getByLabel('Display name', { exact: true }).fill(name);
   const response = page.waitForResponse(item => item.request().method() === 'POST' && item.url().endsWith(code ? `/api/rooms/${code}/join` : '/api/rooms'));
   await page.getByRole('button', { name: code ? 'Join room' : 'Create room', exact: true }).click();

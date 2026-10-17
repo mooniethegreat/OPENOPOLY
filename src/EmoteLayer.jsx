@@ -9,7 +9,7 @@ import './emote-effects.css';
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 function emoteGeometry(event, lane) {
   const width = innerWidth, height = innerHeight;
-  const scene = document.querySelector('.board-scene:not(.scene-preview) .scene-viewport');
+  const scene = document.querySelector('.uno-table-stage, .uno-lobby-panel, .board-scene:not(.scene-preview) .scene-viewport');
   const bounds = scene?.getBoundingClientRect();
   if (!bounds) return null;
   const center = { x: clamp(bounds.left + bounds.width / 2 + (lane - 1) * 42, 45, width - 45), y: clamp(bounds.top + bounds.height * .46 + lane * 12, 90, height - 150) };
@@ -20,7 +20,7 @@ function emoteGeometry(event, lane) {
     return x > 8 && x < width - 8 && y > 20 && y < height - 20 ? { x,y } : null;
   };
   const playerPoint = id => {
-    for (const selector of ['.player-card[data-player-id]','.player-hud[data-player-id]','.scene-token[data-player-id]']) {
+    for (const selector of ['.uno-opponent[data-player-id]','.uno-hand-player[data-player-id]','.uno-lobby-player[data-player-id]','.player-card[data-player-id]','.player-hud[data-player-id]','.scene-token[data-player-id]']) {
       const candidates = [...document.querySelectorAll(selector)].filter(node => node.dataset.playerId === id);
       for (const node of candidates) { const position = point(node); if (position) return position; }
     }

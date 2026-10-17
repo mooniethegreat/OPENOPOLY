@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { getBoard } from '../../shared/board.js';
+import { chooseOpenopoly } from './ui-helpers.js';
 const baseURL = process.env.E2E_BASE_URL || 'http://127.0.0.1:3199';
 
 async function enter(page, name, code) {
   await page.goto(code ? `/?room=${code}` : '/');
-  if (!code) await page.getByRole('button', { name: 'Create room', exact: true }).click();
+  if (!code) { await chooseOpenopoly(page); await page.getByRole('button', { name: 'Create room', exact: true }).click(); }
   await page.getByLabel('Display name', { exact: true }).fill(name);
   const result = page.waitForResponse(response => response.request().method() === 'POST' && response.url().endsWith(code ? `/api/rooms/${code}/join` : '/api/rooms'));
   await page.getByRole('button', { name: code ? 'Join room' : 'Create room', exact: true }).click();

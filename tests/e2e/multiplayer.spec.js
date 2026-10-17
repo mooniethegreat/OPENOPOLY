@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { openGameDrawer, openGameComposer } from './ui-helpers.js';
+import { chooseOpenopoly, openGameDrawer, openGameComposer } from './ui-helpers.js';
 const baseURL = process.env.E2E_BASE_URL || 'http://127.0.0.1:3199';
 
 async function createRoom(page, name, edition = 'classic') {
   await page.goto('/');
+  await chooseOpenopoly(page);
   await page.getByRole('button', { name: 'Create room', exact: true }).click();
   if (page.viewportSize()?.width === 390) {
     expect(await page.evaluate(() => ({ layout: innerWidth, document: document.documentElement.scrollWidth }))).toEqual({ layout: 390, document: 390 });
@@ -145,6 +146,7 @@ test('two browsers play, sign one agreement, vote, and recover their seats on re
     await expect(pageA.locator('.app')).toHaveAttribute('data-mode', 'light');
     await pageA.getByLabel('Room and profile settings', { exact: true }).click();
     await pageA.getByRole('button', { name: 'Return home', exact: true }).click();
+    await chooseOpenopoly(pageA);
     await expect(pageA.getByText('YOUR SAVED TABLES', { exact: true })).toBeVisible();
     await pageA.locator('.saved-tables').getByRole('link', { name: new RegExp(host.room.code) }).click();
     await expect(pageA.locator('.connection')).toHaveText('CONNECTED');

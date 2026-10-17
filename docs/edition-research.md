@@ -37,6 +37,17 @@ Two photographed Contingency effects are implemented with verified-effect metada
 
 At the user's explicit request, **The Resort** apartment complex replaces **The Mule Car** at board position 1. The board remains 40 spaces. Its purchase price remains $70, with the same color group, rent table, mortgage and development costs already assigned to that slot. This is a user customization, not a property recovered from the physical Inland Empire-opoly box. The property's `originalName`, `customization`, and `verification.name = 'user-customization'` fields preserve that distinction; the edition's `customizations` list identifies the replacement for every player. The slot's unverified deed economics remain marked as classic fallbacks. Classic Openopoly is unaffected.
 
+## Requested display names
+
+Four further user-requested names change labels only; their board IDs, prices, rent, mortgages and development costs remain unchanged. The original photographed names remain in `originalName` and customization metadata, and saved games continue to refer to the same property IDs.
+
+| Board position | Original photographed name | Custom display name |
+| --- | --- | --- |
+| 9 | Ontario Town Square | Ontario Mills |
+| 14 | The Green Shack Market | Iron and Kin Coffee Shop |
+| 18 | Boomers! Upland | Bullwinkles |
+| 19 | Santa Ana River Trail | Scandia |
+
 ## Inland Empire-opoly: publisher-family rules and limits
 
 The complete Inland Empire instruction sheet and all individual cards were not recovered. The rules baseline comes from the same publisher's [America-opoly instruction sheet hosted by the Smithsonian Store](https://www.smithsonianstore.com/product_images/uploaded_images/Americaopoly_Instructions.pdf), with [Brampton-opoly instructions](https://www.bramptonlibrary.ca/board-games/brampton-opoly-rules.pdf) and [the publisher-authored Farm-opoly sheet](https://manualzz.com/doc/44372560/farm-opoly-instructions) as corroborating editions. These are primary publisher instructions for related games, not proof of every Inland Empire rule.

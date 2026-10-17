@@ -5,6 +5,10 @@ export const TURN_TIMEOUT_MS = 30000;
 
 export function timedTurnContext(room, { at = Date.now(), connectedActive = false } = {}) {
   const game = room.game;
+  if (room.gameType === 'uno') {
+    if (!connectedActive || room.status !== 'playing' || game?.kind !== 'uno' || game.status !== 'playing' || !['play', 'drawn'].includes(game.phase)) return null;
+    return game.players.some(player => player.id === game.currentPlayerId) ? { playerId: game.currentPlayerId, turn: game.turn, phase: game.phase } : null;
+  }
   if (!connectedActive || room.status !== 'playing' || game?.status !== 'playing' ||
     !['roll', 'end'].includes(game.phase) || isPresentationActive(room.presentation, at) ||
     game.debt || game.auction || game.pendingMortgage || game.pendingPurchase != null) return null;

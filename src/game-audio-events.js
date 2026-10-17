@@ -42,6 +42,9 @@ export function presentationSoundCues(timeline) {
 }
 
 export function eventSoundKinds(room, playerId, event) {
+  if (room.gameType === 'uno' || room.game?.kind === 'uno') {
+    return ({ play: ['card'], draw: ['card'], 'round-start': ['start'], turn: ['turn'], color: ['click'], 'draw-four-pending': ['popup'], challenge: ['popup'], 'ohana-discard': ['card'], 'ohana-complete': ['signature'], uno: ['reaction'], 'uno-caught': ['popup'], 'round-won': ['win'], 'game-won': [], pass: ['click'], timeout: ['turn'] })[event.type] || [];
+  }
   const sounds = [];
   const payment = committedPayment(room, event);
   if (payment) sounds.push(payment.to === playerId ? 'money-in' : payment.from === playerId ? 'money-out' : 'money');

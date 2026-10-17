@@ -349,7 +349,7 @@ export function Board({ preview = false }) {
   const labels = useMemo(() => new Map(board.map(space => {
     const name = spaceName(space, inland ? 'inland-empire' : 'classic');
     return [space.id, { name, ...boardLabel(name, tilePlacement(space.index ?? space.id).side) }];
-  })), [board, inland, context.themeDataReady, fontsReady]);
+  })), [board, inland, fontsReady]);
   const pointerOrigin = event => ({ x: event.clientX, y: event.clientY, cameraX: cameraX - fitted.x * zoom, cameraY: cameraY - fitted.y * zoom, zoom, yaw: cameraRef.current.yaw });
   const capturePointer = id => {
     const viewport = viewportRef.current;

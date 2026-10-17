@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Recover your Openopoly seat</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#10171e;color:#eef5ed;font:17px system-ui}main{max-width:30rem;padding:2rem}h1{font-size:1.7rem}p{line-height:1.6;color:#bccac3}</style>
+<main><h1>Recovering your seat</h1><p id="status" role="status">Checking your private recovery link…</p></main>
+<script type="module">
+const status = document.getElementById('status');
+const fragment = new URLSearchParams(location.hash.slice(1));
+const roomCode = (fragment.get('room') || '').toUpperCase();
+const sessionToken = fragment.get('token') || '';
+history.replaceState(null, '', location.pathname);
+try {
+  if (!/^[A-Z2-9]{6}$/.test(roomCode) || !/^[A-Za-z0-9_-]{43}$/.test(sessionToken)) throw new Error('This recovery link is incomplete. Open the full private link again.');
+  const response = await fetch(`/api/rooms/${encodeURIComponent(roomCode)}`, { headers: { Authorization: `Bearer ${sessionToken}` }, cache: 'no-store', credentials: 'same-origin', signal: AbortSignal.timeout(12000) });
+  if (!response.ok) throw new Error('This recovery link could not be verified. Ask the host for the private recovery link again.');
+  const data = await response.json();
+  const player = data.room?.players?.find(item => item.id === data.playerId);
+  if (!player || data.room.code !== roomCode || typeof player.name !== 'string') throw new Error('The server could not confirm your saved seat.');
+  let sessions = {};
+  try { const saved = JSON.parse(localStorage.getItem('monopoly-table-sessions-v2') || '{}'); if (saved && typeof saved === 'object' && !Array.isArray(saved)) sessions = saved; } catch {}
+  try { const legacy = JSON.parse(localStorage.getItem('monopoly-table-session-v1') || 'null'); if (legacy?.roomCode && !sessions[legacy.roomCode]) sessions[legacy.roomCode] = legacy; } catch {}
+  sessions[roomCode] = { roomCode, playerId: data.playerId, sessionToken, name: player.name, theme: data.room.theme };
+  localStorage.setItem('monopoly-table-sessions-v2', JSON.stringify(sessions));
+  localStorage.setItem('monopoly-table-active-v2', roomCode);
+  localStorage.removeItem('monopoly-table-session-v1');
+  status.textContent = `Seat verified for ${player.name}. Returning to your table…`;
+  location.replace(`/?room=${encodeURIComponent(roomCode)}`);
+} catch (error) {
+  document.querySelector('h1').textContent = 'Seat recovery needs attention';
+  status.textContent = error.name === 'TimeoutError' ? 'The table is taking too long to respond. Open your private link again in a moment.' : (error.message || 'Unable to save your seat in this browser.');
+}
+</script>
+</html>

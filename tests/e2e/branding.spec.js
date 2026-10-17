@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import { createApp } from '../../server/app.js';
 import { createGame } from '../../shared/engine.js';
 import { decisionContext } from '../../src/action-gate.js';
+import { chooseOpenopoly } from './ui-helpers.js';
 
 test('Openopoly branding preserves legacy saved seats, preferences and restored balances', async ({ browser }, info) => {
   const server = createApp({ storePath: '', distPath: path.resolve(process.env.E2E_BRAND_DIST || 'dist') });
@@ -15,8 +16,11 @@ test('Openopoly branding preserves legacy saved seats, preferences and restored 
   let peer;
   try {
     await page.goto(origin);
+    await expect(page).toHaveTitle('Openopoly & OpenUno');
+    await expect(page.getByTestId('game-chooser')).toBeVisible();
+    await chooseOpenopoly(page);
     await expect(page).toHaveTitle('Openopoly');
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Play Openopoly online/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Play Openopoly and OpenUno online/);
     await expect(page.locator('.welcome-copy h1>span')).toHaveText('OPENOPOLY');
     expect(await (await page.request.get('/favicon.svg')).text()).toContain('<title>Openopoly</title>');
     await page.screenshot({ path: info.outputPath('openopoly-menu.png') });

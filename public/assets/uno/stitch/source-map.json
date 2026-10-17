@@ -1,0 +1,158 @@
+{
+  "photoCrops": [
+    {
+      "x": 280,
+      "y": 330,
+      "width": 360,
+      "height": 290
+    },
+    {
+      "x": 720,
+      "y": 330,
+      "width": 320,
+      "height": 290
+    },
+    {
+      "x": 1140,
+      "y": 320,
+      "width": 280,
+      "height": 300
+    },
+    {
+      "x": 1490,
+      "y": 300,
+      "width": 330,
+      "height": 325
+    },
+    {
+      "x": 1850,
+      "y": 330,
+      "width": 370,
+      "height": 310
+    },
+    {
+      "x": 110,
+      "y": 770,
+      "width": 440,
+      "height": 410
+    },
+    {
+      "x": 665,
+      "y": 715,
+      "width": 385,
+      "height": 410
+    },
+    {
+      "x": 1140,
+      "y": 710,
+      "width": 390,
+      "height": 450
+    },
+    {
+      "x": 1580,
+      "y": 735,
+      "width": 410,
+      "height": 415
+    },
+    {
+      "x": 2010,
+      "y": 650,
+      "width": 400,
+      "height": 490
+    }
+  ],
+  "exact": {
+    "wild-draw-four": {
+      "image": 3,
+      "x": 365,
+      "y": 60,
+      "width": 373,
+      "height": 579
+    },
+    "wild": {
+      "image": 3,
+      "x": 816,
+      "y": 60,
+      "width": 374,
+      "height": 579
+    },
+    "ohana": {
+      "image": 3,
+      "x": 1267,
+      "y": 60,
+      "width": 374,
+      "height": 579
+    },
+    "blue-draw-two": {
+      "image": 3,
+      "x": 366,
+      "y": 717,
+      "width": 373,
+      "height": 581
+    },
+    "green-reverse": {
+      "image": 3,
+      "x": 1267,
+      "y": 717,
+      "width": 373,
+      "height": 581
+    },
+    "green-9": {
+      "image": 3,
+      "x": 366,
+      "y": 1361,
+      "width": 373,
+      "height": 579
+    },
+    "yellow-skip": {
+      "image": 3,
+      "x": 816,
+      "y": 1361,
+      "width": 374,
+      "height": 579
+    },
+    "yellow-7": {
+      "image": 3,
+      "x": 1267,
+      "y": 1361,
+      "width": 373,
+      "height": 579
+    },
+    "red-0": {
+      "image": 4,
+      "x": 1197,
+      "y": 404,
+      "width": 187,
+      "height": 285
+    },
+    "green-0": {
+      "image": 4,
+      "x": 1226,
+      "y": 711,
+      "width": 183,
+      "height": 287
+    },
+    "blue-0": {
+      "image": 4,
+      "x": 1211,
+      "y": 1023,
+      "width": 186,
+      "height": 287
+    },
+    "yellow-0": {
+      "image": 4,
+      "x": 1247,
+      "y": 1333,
+      "width": 186,
+      "height": 283
+    },
+    "green-skip": {
+      "image": 4,
+      "x": 1058,
+      "y": 1640,
+      "width": 183,
+      "height": 288
+    }
+  },
+  "notes": "Official crops reference 2000x2000 product images. Photo crops reference the 2560x1440 review photo. Adapted atlas uses a digital suit frame with original character artwork; it is not a full official scan set."
+}
